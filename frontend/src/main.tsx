@@ -6,9 +6,7 @@ import ReactDOM from 'react-dom/client';
 
 const theme = createTheme({
   primaryColor: 'green',
-  focusRing: 'always',
   fontFamily: 'Roman',
-  scale: 1.2,
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -5,7 +5,7 @@
   "frontend:install": "yarn install",
   "frontend:build": "yarn build",
   "frontend:dev:watcher": "yarn dev",
-  "frontend:dev:serverUrl": "auto",
+  "frontend:dev:serverUrl": "http://localhost:5173",
   "author": {
     "name": "Thomas Jay Rush",
     "email": "jrush@quickblocks.io"

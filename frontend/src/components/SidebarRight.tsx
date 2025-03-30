@@ -1,11 +1,7 @@
-import { SidebarProps } from './SidebarLeft';
-import { Text, Button, Stack } from '@mantine/core';
+import { Text, Stack } from '@mantine/core';
 
-export const SidebarRight = ({ opened, toggle }: SidebarProps) => (
+export const SidebarRight = ({ opened }: { opened: boolean }) => (
   <div>
-    <Button size="xs" onClick={toggle}>
-      {opened ? 'Close' : 'Open'}
-    </Button>
     {opened && (
       <Stack p="md">
         <Text size="sm">Help Topic 1</Text>

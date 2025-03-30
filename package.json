@@ -2,6 +2,7 @@
   "scripts": {
     "lint": "cd frontend && yarn eslint . && cd .. && golangci-lint run && echo '✅ No issues found.'",
     "dev": "wails dev -debounce 100 2>&1 | grep -v 'AssetHandler'",
+    "start": "yarn dev",
     "build": "wails build"
   },
   "devDependencies": {

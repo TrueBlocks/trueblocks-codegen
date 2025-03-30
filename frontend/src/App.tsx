@@ -1,4 +1,3 @@
-import { ConsoleLog } from '../wailsjs/go/main/App';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { SidebarLeft } from './components/SidebarLeft';
@@ -6,15 +5,13 @@ import { SidebarRight } from './components/SidebarRight';
 import { About } from './views/About';
 import { Home } from './views/Home';
 import { AppShell, ActionIcon } from '@mantine/core';
-// import { IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 const RouteLogger = () => {
   const location = useLocation();
-  useEffect(() => {
-    ConsoleLog(location.pathname);
-  }, [location]);
+  useEffect(() => {}, [location]);
   return null;
 };
 
@@ -51,31 +48,25 @@ export const App = () => {
         </AppShell.Header>
 
         <AppShell.Navbar p="xs">
-          <ActionIcon
-            variant="subtle"
-            size="sm"
-            onClick={() => setLeftOpen((o) => !o)}
-          >
-            {leftOpen ? 'X' : '+'}
+          <ActionIcon onClick={() => setLeftOpen((o) => !o)}>
+            {leftOpen ? (
+              <FaChevronLeft size={16} />
+            ) : (
+              <FaChevronRight size={16} />
+            )}
           </ActionIcon>
-          <SidebarLeft
-            opened={leftOpen}
-            toggle={() => setLeftOpen((o) => !o)}
-          />
+          <SidebarLeft opened={leftOpen} />
         </AppShell.Navbar>
 
         <AppShell.Aside p="xs">
-          <ActionIcon
-            variant="subtle"
-            size="sm"
-            onClick={() => setRightOpen((o) => !o)}
-          >
-            {rightOpen ? 'X' : '+'}
+          <ActionIcon onClick={() => setRightOpen((o) => !o)}>
+            {rightOpen ? (
+              <FaChevronRight size={16} />
+            ) : (
+              <FaChevronLeft size={16} />
+            )}
           </ActionIcon>
-          <SidebarRight
-            opened={rightOpen}
-            toggle={() => setRightOpen((o) => !o)}
-          />
+          <SidebarRight opened={rightOpen} />
         </AppShell.Aside>
 
         <AppShell.Main p="xs">
