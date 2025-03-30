@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "trueblocks-codeGen",
+  "outputfilename": "trueblocks-codeGen",
+  "frontend:install": "yarn install",
+  "frontend:build": "yarn build",
+  "frontend:dev:watcher": "yarn dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "Thomas Jay Rush",
+    "email": "jrush@quickblocks.io"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "lint": "cd frontend && yarn eslint . && cd .. && golangci-lint run && echo '✅ No issues found.'",
+    "dev": "wails dev -debounce 100 2>&1 | grep -v 'AssetHandler'",
+    "build": "wails build"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "prettier": "^3.5.3"
+  }
+}
