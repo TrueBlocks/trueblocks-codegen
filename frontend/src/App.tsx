@@ -14,14 +14,25 @@ import {
 } from '@components';
 import { AppShell } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 
 export const App = () => {
+  return (
+    <BrowserRouter>
+      <RoutedApp />
+    </BrowserRouter>
+  );
+};
+
+const RoutedApp = () => {
   const [menuOpen, setMenuOpen] = useState(true);
   const [helpOpen, setHelpOpen] = useState(true);
   const [lastView, setLastView] = useState('/');
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const toggleMenu = (open: boolean) => {
     setMenuOpen(open);
@@ -55,11 +66,50 @@ export const App = () => {
     void initializeApp();
   }, []);
 
+  useHotkeys('mod+1', (e) => {
+    e.preventDefault();
+    void navigate('/');
+  });
+
+  useHotkeys('mod+2', (e) => {
+    e.preventDefault();
+    void navigate('/about');
+  });
+
+  useHotkeys('mod+3', (e) => {
+    e.preventDefault();
+    void navigate('/settings');
+  });
+
+  useHotkeys(
+    'mod+h',
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const next = !helpOpen;
+      setHelpOpen(next);
+      void SetHelpOpen(next);
+    },
+    { enableOnFormTags: true },
+  );
+
+  useHotkeys(
+    'mod+m',
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const next = !menuOpen;
+      setMenuOpen(next);
+      void SetMenuOpen(next);
+    },
+    { enableOnFormTags: true },
+  );
+
   if (error) return <div>Error: {error}</div>;
   if (!ready) return <div>Not ready</div>;
 
   return (
-    <BrowserRouter>
+    <>
       <RouteLogger ready={ready} lastView={lastView} />
       <AppShell
         header={{ height: 60 }}
@@ -88,6 +138,6 @@ export const App = () => {
         <View lastView={lastView} />
         <Footer opened={menuOpen} />
       </AppShell>
-    </BrowserRouter>
+    </>
   );
 };

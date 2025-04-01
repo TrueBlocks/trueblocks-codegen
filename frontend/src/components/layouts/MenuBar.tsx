@@ -1,6 +1,13 @@
 import { ToggleChevron } from '@components';
 import { AppShell, Button, Stack } from '@mantine/core';
+import { FaHome, FaInfoCircle, FaCog } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+
+const menuItems = [
+  { icon: FaHome, label: 'Home', to: '/' },
+  { icon: FaInfoCircle, label: 'About', to: '/about' },
+  { icon: FaCog, label: 'Settings', to: '/settings' },
+];
 
 export const MenuBar = ({
   opened,
@@ -18,19 +25,20 @@ export const MenuBar = ({
       direction="left"
     />
     <div>
-      {opened && (
-        <Stack gap="sm">
-          <Button component={NavLink} to="/" variant="subtle">
-            Home
+      <Stack gap="sm">
+        {menuItems.map(({ icon: Icon, label, to }) => (
+          <Button
+            key={to}
+            component={NavLink}
+            to={to}
+            variant="subtle"
+            leftSection={<Icon size={16} />}
+            style={{ justifyContent: opened ? 'flex-start' : 'center' }}
+          >
+            {opened && label}
           </Button>
-          <Button component={NavLink} to="/about" variant="subtle">
-            About
-          </Button>
-          <Button component={NavLink} to="/settings" variant="subtle">
-            Settings
-          </Button>
-        </Stack>
-      )}
+        ))}
+      </Stack>{' '}
     </div>
   </AppShell.Navbar>
 );
