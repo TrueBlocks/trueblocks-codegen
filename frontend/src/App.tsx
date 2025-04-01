@@ -78,6 +78,11 @@ const RoutedApp = () => {
 
   useHotkeys('mod+3', (e) => {
     e.preventDefault();
+    void navigate('/data');
+  });
+
+  useHotkeys('mod+4', (e) => {
+    e.preventDefault();
     void navigate('/settings');
   });
 
@@ -109,18 +114,19 @@ const RoutedApp = () => {
   if (!ready) return <div>Not ready</div>;
 
   return (
-    <>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <RouteLogger ready={ready} lastView={lastView} />
       <AppShell
+        style={{ flex: 1, height: '100%' }}
         header={{ height: 60 }}
         footer={{ height: 40 }}
         navbar={{
-          width: menuOpen ? 250 : 50,
+          width: menuOpen ? 180 : 50,
           breakpoint: 'sm',
           collapsed: { mobile: !menuOpen },
         }}
         aside={{
-          width: helpOpen ? 250 : 50,
+          width: helpOpen ? 180 : 50,
           breakpoint: 'sm',
           collapsed: { mobile: !helpOpen },
         }}
@@ -128,7 +134,6 @@ const RoutedApp = () => {
         styles={{
           main: {
             paddingTop: 60,
-            height: 'calc(100vh - 100px)',
           },
         }}
       >
@@ -138,6 +143,6 @@ const RoutedApp = () => {
         <View lastView={lastView} />
         <Footer opened={menuOpen} />
       </AppShell>
-    </>
+    </div>
   );
 };

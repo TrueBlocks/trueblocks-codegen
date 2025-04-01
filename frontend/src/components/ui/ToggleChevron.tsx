@@ -23,10 +23,23 @@ export const ToggleChevron = ({
       <FaChevronLeft size={16} />
     );
 
-  const alignment = direction === 'left' ? 'flex-end' : 'flex-start';
+  const alignment =
+    direction === 'left'
+      ? opened
+        ? 'flex-end'
+        : 'center'
+      : opened
+        ? 'flex-start'
+        : 'center';
 
   return (
-    <div style={{ display: 'flex', justifyContent: alignment }}>
+    <div
+      style={{
+        backgroundColor: 'red',
+        display: 'flex',
+        justifyContent: alignment,
+      }}
+    >
       <ActionIcon onClick={onToggle}>{icon}</ActionIcon>
     </div>
   );

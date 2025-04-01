@@ -1,5 +1,5 @@
 import { AppShell, Paper, Text } from '@mantine/core';
-import { About, Home, Settings } from '@views';
+import { About, Home, Data, Settings } from '@views';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 interface ViewProps {
@@ -15,6 +15,7 @@ export const View = ({ title, lastView }: ViewProps) => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/data" element={<Data />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to={lastView} replace />} />
         </Routes>

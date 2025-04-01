@@ -1,7 +1,3 @@
 # Settings View
 
-Adjust your application settings here.
-
-- Configure templates
-- Change preferences
-- Set up your environment
+These are your application-level settings.
