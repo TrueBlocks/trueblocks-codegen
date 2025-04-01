@@ -9,9 +9,11 @@
 
 - **Repository:**
   - Existing GitHub repository at:
-    ```
+
+    ```[bash]
     ~/Development/trueblocks-codeGen
     ```
+
   - Currently contains only `.git`.
 
 - **Package Management:**
@@ -60,6 +62,7 @@
     - YAML (`.yaml`, `.yml`)
 
 - **Frontend Formatting Configuration (`.prettierrc`):**
+  
   ```json
   {
     "singleQuote": true,
@@ -126,12 +129,14 @@
   - No jumping ahead without explicit consent.
 
 - **ToDo List Format:**
-  ```
+
+  ```bash
   | #   | Task                             | Status     |
   | --- | -------------------------------- | ---------- |
   | 1   | Example Task                     | Incomplete |
   | 2   | ~~Completed Task (crossed out)~~ | ~~Done~~   |
   ```
+
   - Explicit confirmation ("Done") before moving forward.
 
 - **Minimal Commentary:**

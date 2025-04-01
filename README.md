@@ -55,8 +55,8 @@ yarn build
 │   │   ├── components
 │   │   │   ├── Header.tsx
 │   │   │   ├── Footer.tsx
-│   │   │   ├── SidebarLeft.tsx
-│   │   │   └── SidebarRight.tsx
+│   │   │   ├── MenuBar.tsx
+│   │   │   └── HelpBar.tsx
 │   │   └── App.tsx
 │   ├── eslint.config.js
 │   └── vite.config.ts

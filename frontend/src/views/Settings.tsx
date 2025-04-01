@@ -1,9 +1,9 @@
 import { Flex, Text } from '@mantine/core';
 
-export const Home = () => {
+export const Settings = () => {
   return (
     <Flex align="center" justify="center" h="100%">
-      <Text>Home</Text>
+      <Text>Settings</Text>
     </Flex>
   );
 };

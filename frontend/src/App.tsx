@@ -1,39 +1,78 @@
-import { Footer } from './components/Footer';
-import { Header } from './components/Header';
-import { SidebarLeft } from './components/SidebarLeft';
-import { SidebarRight } from './components/SidebarRight';
-import { About } from './views/About';
-import { Home } from './views/Home';
-import { AppShell, ActionIcon } from '@mantine/core';
+import {
+  IsReady,
+  GetPreferences,
+  SetMenuOpen,
+  SetHelpOpen,
+} from '../wailsjs/go/main/App';
+import {
+  Footer,
+  Header,
+  HelpBar,
+  MenuBar,
+  RouteLogger,
+  View,
+} from '@components';
+import { AppShell } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-
-const RouteLogger = () => {
-  const location = useLocation();
-  useEffect(() => {}, [location]);
-  return null;
-};
+import { BrowserRouter } from 'react-router-dom';
 
 export const App = () => {
-  const [leftOpen, setLeftOpen] = useState(true);
-  const [rightOpen, setRightOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(true);
+  const [helpOpen, setHelpOpen] = useState(true);
+  const [lastView, setLastView] = useState('/');
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const toggleMenu = (open: boolean) => {
+    setMenuOpen(open);
+    void SetMenuOpen(open);
+  };
+
+  const toggleHelp = (open: boolean) => {
+    setHelpOpen(open);
+    void SetHelpOpen(open);
+  };
+
+  useEffect(() => {
+    const initializeApp = async () => {
+      let attempts = 0;
+      const maxAttempts = 200;
+      while (attempts < maxAttempts) {
+        const isReady = await IsReady();
+        if (isReady) {
+          const prefs = await GetPreferences();
+          setMenuOpen(prefs.menuOpen);
+          setHelpOpen(prefs.helpOpen);
+          setLastView(prefs.lastView || '/');
+          setReady(true);
+          return;
+        }
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        attempts++;
+      }
+      setError('Backend failed to initialize within timeout');
+    };
+    void initializeApp();
+  }, []);
+
+  if (error) return <div>Error: {error}</div>;
+  if (!ready) return <div>Not ready</div>;
 
   return (
     <BrowserRouter>
-      <RouteLogger />
+      <RouteLogger ready={ready} lastView={lastView} />
       <AppShell
         header={{ height: 60 }}
         footer={{ height: 40 }}
         navbar={{
-          width: leftOpen ? 250 : 50,
+          width: menuOpen ? 250 : 50,
           breakpoint: 'sm',
-          collapsed: { mobile: !leftOpen },
+          collapsed: { mobile: !menuOpen },
         }}
         aside={{
-          width: rightOpen ? 250 : 50,
+          width: helpOpen ? 250 : 50,
           breakpoint: 'sm',
-          collapsed: { mobile: !rightOpen },
+          collapsed: { mobile: !helpOpen },
         }}
         padding={0}
         styles={{
@@ -43,45 +82,11 @@ export const App = () => {
           },
         }}
       >
-        <AppShell.Header>
-          <Header />
-        </AppShell.Header>
-
-        <AppShell.Navbar p="xs">
-          <ActionIcon onClick={() => setLeftOpen((o) => !o)}>
-            {leftOpen ? (
-              <FaChevronLeft size={16} />
-            ) : (
-              <FaChevronRight size={16} />
-            )}
-          </ActionIcon>
-          <SidebarLeft opened={leftOpen} />
-        </AppShell.Navbar>
-
-        <AppShell.Aside p="xs">
-          <ActionIcon onClick={() => setRightOpen((o) => !o)}>
-            {rightOpen ? (
-              <FaChevronRight size={16} />
-            ) : (
-              <FaChevronLeft size={16} />
-            )}
-          </ActionIcon>
-          <SidebarRight opened={rightOpen} />
-        </AppShell.Aside>
-
-        <AppShell.Main p="xs">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
-        </AppShell.Main>
-
-        <AppShell.Footer
-          ml={leftOpen ? 250 : 50}
-          style={{ borderLeft: '1px solid var(--mantine-color-gray-7)' }}
-        >
-          <Footer />
-        </AppShell.Footer>
+        <Header />
+        <MenuBar opened={menuOpen} setOpen={toggleMenu} />
+        <HelpBar opened={helpOpen} setOpen={toggleHelp} />
+        <View lastView={lastView} />
+        <Footer opened={menuOpen} />
       </AppShell>
     </BrowserRouter>
   );
