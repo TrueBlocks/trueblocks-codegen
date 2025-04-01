@@ -35,7 +35,6 @@ export const ToggleChevron = ({
   return (
     <div
       style={{
-        backgroundColor: 'red',
         display: 'flex',
         justifyContent: alignment,
       }}

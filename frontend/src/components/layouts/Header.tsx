@@ -4,7 +4,7 @@ export const Header = () => {
   return (
     <AppShell.Header>
       <Group justify="space-between" p="md" h="100%">
-        <Text size="lg" fw={700}>
+        <Text size="xl" fw={700}>
           TrueBlocks CodeGen
         </Text>
         <Text>Header Content</Text>

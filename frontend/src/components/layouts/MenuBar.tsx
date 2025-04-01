@@ -21,7 +21,6 @@ export const MenuBar = ({
     style={{
       paddingTop: 0,
       paddingBottom: 0,
-      // backgroundColor: 'red',
       height: 'calc(100vh - 40px)',
     }}
   >
@@ -30,8 +29,6 @@ export const MenuBar = ({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        // borderBottom: '2px solid red',
-        // backgroundColor: 'white',
       }}
     >
       <ToggleChevron

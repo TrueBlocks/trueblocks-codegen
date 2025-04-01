@@ -117,30 +117,23 @@ const RoutedApp = () => {
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <RouteLogger ready={ready} lastView={lastView} />
       <AppShell
-        style={{ flex: 1, height: '100%' }}
         header={{ height: 60 }}
         footer={{ height: 40 }}
         navbar={{
-          width: menuOpen ? 180 : 50,
+          width: menuOpen ? 150 : 50,
           breakpoint: 'sm',
           collapsed: { mobile: !menuOpen },
         }}
         aside={{
-          width: helpOpen ? 180 : 50,
+          width: helpOpen ? 300 : 50,
           breakpoint: 'sm',
           collapsed: { mobile: !helpOpen },
-        }}
-        padding={0}
-        styles={{
-          main: {
-            paddingTop: 60,
-          },
         }}
       >
         <Header />
         <MenuBar opened={menuOpen} setOpen={toggleMenu} />
         <HelpBar opened={helpOpen} setOpen={toggleHelp} />
-        <View lastView={lastView} />
+        <View title="" lastView={lastView} />
         <Footer opened={menuOpen} />
       </AppShell>
     </div>
