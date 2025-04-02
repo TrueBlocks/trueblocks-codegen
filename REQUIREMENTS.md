@@ -1,9 +1,4 @@
-TrueBlocks CodeGen Requirements Document
-Date: April 01, 2025
-
-Version: 1.0
-
-Authors: [Your Name], Grok 3 (xAI)
+TrueBlocks CodeGen Requirements Document (Slightly Outdated)
 
 Overview
 This document outlines the high-level requirements for enhancing the TrueBlocks CodeGen desktop application built with Wails and React. The focus is on improving UI components, data management, application state, and leveraging modern frameworks like Wails 3.0, while addressing lessons learned from previous iterations.
