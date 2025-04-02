@@ -45,7 +45,14 @@ export const HelpBar = ({
   }, [location, opened]);
 
   return (
-    <AppShell.Aside p="md">
+    <AppShell.Aside
+      p="md"
+      style={{
+        backgroundColor: 'black',
+        color: 'white',
+        transition: 'width 0.2s ease',
+      }}
+    >
       <ToggleChevron
         opened={opened}
         onToggle={() => setOpen(!opened)}

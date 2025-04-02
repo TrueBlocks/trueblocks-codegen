@@ -1,4 +1,4 @@
-# About This App
+# About View
 
 This app generates code from your TrueBlocks configuration.
 
@@ -7,4 +7,3 @@ This app generates code from your TrueBlocks configuration.
 - Preferences are persisted automatically
 
 Use the left menu to switch views.
-

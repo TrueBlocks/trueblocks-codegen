@@ -5,12 +5,13 @@ import {
   SetHelpOpen,
 } from '../wailsjs/go/main/App';
 import {
+  getBarWidth,
   Footer,
   Header,
   HelpBar,
   MenuBar,
   RouteLogger,
-  View,
+  MainView,
 } from '@components';
 import { AppShell } from '@mantine/core';
 import { useEffect, useState } from 'react';
@@ -113,27 +114,39 @@ const RoutedApp = () => {
   if (error) return <div>Error: {error}</div>;
   if (!ready) return <div>Not ready</div>;
 
+  const header = { height: 60 };
+  const footer = { height: 40 };
+  const navbar = {
+    width: getBarWidth(menuOpen, 1),
+    breakpoint: 'sm',
+    collapsed: { mobile: !menuOpen },
+  };
+  const aside = {
+    width: getBarWidth(helpOpen, 2),
+    breakpoint: 'sm',
+    collapsed: { mobile: !helpOpen },
+  };
+
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+      }}
+    >
       <RouteLogger ready={ready} lastView={lastView} />
       <AppShell
-        header={{ height: 60 }}
-        footer={{ height: 40 }}
-        navbar={{
-          width: menuOpen ? 150 : 50,
-          breakpoint: 'sm',
-          collapsed: { mobile: !menuOpen },
-        }}
-        aside={{
-          width: helpOpen ? 300 : 50,
-          breakpoint: 'sm',
-          collapsed: { mobile: !helpOpen },
-        }}
+        layout="default"
+        header={header}
+        footer={footer}
+        navbar={navbar}
+        aside={aside}
       >
         <Header />
         <MenuBar opened={menuOpen} setOpen={toggleMenu} />
         <HelpBar opened={helpOpen} setOpen={toggleHelp} />
-        <View title="" lastView={lastView} />
+        <MainView opened={menuOpen} />
         <Footer opened={menuOpen} />
       </AppShell>
     </div>
