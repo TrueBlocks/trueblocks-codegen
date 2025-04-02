@@ -3,7 +3,7 @@ import { AppShell } from '@mantine/core';
 import { About, Data, Home, Settings } from '@views';
 import { Route, Routes } from 'react-router-dom';
 
-export const MainView = ({ opened: _ }: { opened: boolean }) => {
+export const MainView = ({ collapsed: _ }: { collapsed: boolean }) => {
   return (
     <AppShell.Main
       style={{

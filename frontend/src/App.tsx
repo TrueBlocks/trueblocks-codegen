@@ -1,8 +1,8 @@
 import {
   IsReady,
   GetPreferences,
-  SetMenuOpen,
-  SetHelpOpen,
+  CollapseMenu,
+  CollapseHelp,
 } from '../wailsjs/go/main/App';
 import {
   getBarWidth,
@@ -27,8 +27,8 @@ export const App = () => {
 };
 
 const RoutedApp = () => {
-  const [menuOpen, setMenuOpen] = useState(true);
-  const [helpOpen, setHelpOpen] = useState(true);
+  const [menuCollapsed, collapseMenu] = useState(true);
+  const [helpCollapsed, collapseHelp] = useState(true);
   const [lastView, setLastView] = useState('/');
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,13 +36,13 @@ const RoutedApp = () => {
   const navigate = useNavigate();
 
   const toggleMenu = (open: boolean) => {
-    setMenuOpen(open);
-    void SetMenuOpen(open);
+    collapseMenu(open);
+    void CollapseMenu(open);
   };
 
   const toggleHelp = (open: boolean) => {
-    setHelpOpen(open);
-    void SetHelpOpen(open);
+    collapseHelp(open);
+    void CollapseHelp(open);
   };
 
   useEffect(() => {
@@ -53,8 +53,8 @@ const RoutedApp = () => {
         const isReady = await IsReady();
         if (isReady) {
           const prefs = await GetPreferences();
-          setMenuOpen(prefs.menuOpen);
-          setHelpOpen(prefs.helpOpen);
+          collapseMenu(prefs.menuCollapsed);
+          collapseHelp(prefs.helpCollapsed);
           setLastView(prefs.lastView || '/');
           setReady(true);
           return;
@@ -92,9 +92,9 @@ const RoutedApp = () => {
     (event) => {
       event.preventDefault();
       event.stopPropagation();
-      const next = !helpOpen;
-      setHelpOpen(next);
-      void SetHelpOpen(next);
+      const next = !helpCollapsed;
+      collapseHelp(next);
+      void CollapseHelp(next);
     },
     { enableOnFormTags: true },
   );
@@ -104,9 +104,9 @@ const RoutedApp = () => {
     (event) => {
       event.preventDefault();
       event.stopPropagation();
-      const next = !menuOpen;
-      setMenuOpen(next);
-      void SetMenuOpen(next);
+      const next = !menuCollapsed;
+      collapseMenu(next);
+      void CollapseMenu(next);
     },
     { enableOnFormTags: true },
   );
@@ -117,14 +117,14 @@ const RoutedApp = () => {
   const header = { height: 60 };
   const footer = { height: 40 };
   const navbar = {
-    width: getBarWidth(menuOpen, 1),
+    width: getBarWidth(menuCollapsed, 1),
     breakpoint: 'sm',
-    collapsed: { mobile: !menuOpen },
+    collapsed: { mobile: !menuCollapsed },
   };
   const aside = {
-    width: getBarWidth(helpOpen, 2),
+    width: getBarWidth(helpCollapsed, 2),
     breakpoint: 'sm',
-    collapsed: { mobile: !helpOpen },
+    collapsed: { mobile: !helpCollapsed },
   };
 
   return (
@@ -144,10 +144,10 @@ const RoutedApp = () => {
         aside={aside}
       >
         <Header />
-        <MenuBar opened={menuOpen} setOpen={toggleMenu} />
-        <HelpBar opened={helpOpen} setOpen={toggleHelp} />
-        <MainView opened={menuOpen} />
-        <Footer opened={menuOpen} />
+        <MenuBar collapsed={menuCollapsed} setCollapsed={toggleMenu} />
+        <HelpBar collapsed={helpCollapsed} setCollapsed={toggleHelp} />
+        <MainView collapsed={menuCollapsed} />
+        <Footer collapsed={menuCollapsed} />
       </AppShell>
     </div>
   );

@@ -98,22 +98,20 @@ func (a *App) GetPreferences() *config.Preferences {
 	return a.prefs
 }
 
-func (a *App) SetMenuOpen(open bool) {
+func (a *App) CollapseMenu(collapse bool) {
 	if a.prefs == nil {
 		return
 	}
-	a.prefs.MenuOpen = open
+	a.prefs.MenuCollapsed = collapse
 	_ = config.SavePreferences(a.prefs)
-	// fmt.Println("SetMenuOpen called with:", open)
 }
 
-func (a *App) SetHelpOpen(open bool) {
+func (a *App) CollapseHelp(collapsed bool) {
 	if a.prefs == nil {
 		return
 	}
-	a.prefs.HelpOpen = open
+	a.prefs.HelpCollapsed = collapsed
 	_ = config.SavePreferences(a.prefs)
-	// fmt.Println("SetHelpOpen called with:", open)
 }
 
 func (a *App) SetLastView(view string) {

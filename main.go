@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
@@ -23,6 +24,7 @@ func main() {
 		OnStartup:     app.startup,
 		OnDomReady:    app.domReady,
 		OnBeforeClose: app.beforeClose,
+		LogLevel:      logger.INFO,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},

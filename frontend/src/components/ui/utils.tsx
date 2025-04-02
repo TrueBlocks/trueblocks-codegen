@@ -1,2 +1,2 @@
-export const getBarWidth = (opened: boolean, factor: number) =>
-  opened ? 150 * factor : 50;
+export const getBarWidth = (collapsed: boolean, factor: number) =>
+  collapsed ? 50 : 150 * factor;

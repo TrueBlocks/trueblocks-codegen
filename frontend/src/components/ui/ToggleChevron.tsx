@@ -2,35 +2,35 @@ import { ActionIcon } from '@mantine/core';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 export const ToggleChevron = ({
-  opened,
+  collapsed,
   onToggle,
   direction,
 }: {
-  opened: boolean;
+  collapsed: boolean;
   onToggle: () => void;
   direction: 'left' | 'right';
 }) => {
   const icon =
     direction === 'left' ? (
-      opened ? (
-        <FaChevronLeft size={16} />
-      ) : (
+      collapsed ? (
         <FaChevronRight size={16} />
+      ) : (
+        <FaChevronLeft size={16} />
       )
-    ) : opened ? (
-      <FaChevronRight size={16} />
-    ) : (
+    ) : collapsed ? (
       <FaChevronLeft size={16} />
+    ) : (
+      <FaChevronRight size={16} />
     );
 
   const alignment =
     direction === 'left'
-      ? opened
-        ? 'flex-end'
-        : 'center'
-      : opened
-        ? 'flex-start'
-        : 'center';
+      ? collapsed
+        ? 'center'
+        : 'flex-end'
+      : collapsed
+        ? 'center'
+        : 'flex-start';
 
   return (
     <div

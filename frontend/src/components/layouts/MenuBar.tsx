@@ -3,7 +3,7 @@ import { AppShell, Button, Stack } from '@mantine/core';
 import { FaCog, FaDatabase, FaHome, FaInfoCircle } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-export const MenuBar = ({ opened, setOpen }: MenuBarProps) => {
+export const MenuBar = ({ collapsed, setCollapsed }: MenuBarProps) => {
   return (
     <AppShell.Navbar
       p="md"
@@ -11,15 +11,15 @@ export const MenuBar = ({ opened, setOpen }: MenuBarProps) => {
         paddingTop: 0,
         paddingBottom: 0,
         height: 'calc(100vh - 30px)',
-        width: getBarWidth(opened, 1),
+        width: getBarWidth(collapsed, 1),
         transition: 'width 0.2s ease',
       }}
     >
       <Stack h="100%" justify="space-between" gap="sm">
         <Stack gap="sm">
           <ToggleChevron
-            opened={opened}
-            onToggle={() => setOpen(!opened)}
+            collapsed={collapsed}
+            onToggle={() => setCollapsed(!collapsed)}
             direction="left"
           />
           {menuItems.map(({ icon: Icon, label, to }) => (
@@ -30,17 +30,17 @@ export const MenuBar = ({ opened, setOpen }: MenuBarProps) => {
                   color="blue"
                   fullWidth
                   h={36}
-                  w={opened ? '100%' : 36}
+                  w={collapsed ? 36 : '100%'}
                   leftSection={
-                    <Icon size={16} style={{ marginLeft: opened ? 0 : 9 }} />
+                    <Icon size={16} style={{ marginLeft: collapsed ? 9 : 0 }} />
                   }
-                  justify={opened ? 'flex-start' : 'center'}
-                  px={opened ? 'md' : 0}
+                  justify={collapsed ? 'center' : 'flex-start'}
+                  px={collapsed ? 0 : 'md'}
                   style={{
-                    marginLeft: opened ? 0 : -9,
+                    marginLeft: collapsed ? -9 : 0,
                   }}
                 >
-                  {opened && label}
+                  {!collapsed && label}
                 </Button>
               )}
             </NavLink>
@@ -54,17 +54,17 @@ export const MenuBar = ({ opened, setOpen }: MenuBarProps) => {
                 color="blue"
                 fullWidth
                 h={36}
-                w={opened ? '100%' : 36}
+                w={collapsed ? 36 : '100%'}
                 leftSection={
-                  <FaCog size={16} style={{ marginLeft: opened ? 0 : 9 }} />
+                  <FaCog size={16} style={{ marginLeft: collapsed ? 9 : 0 }} />
                 }
-                justify={opened ? 'flex-start' : 'center'}
-                px={opened ? 'md' : 0}
+                justify={collapsed ? 'center' : 'flex-start'}
+                px={collapsed ? 0 : 'md'}
                 style={{
-                  marginLeft: opened ? 0 : -9,
+                  marginLeft: collapsed ? -9 : 0,
                 }}
               >
-                {opened && 'Settings'}
+                {!collapsed && 'Settings'}
               </Button>
             )}
           </NavLink>
@@ -85,6 +85,6 @@ const menuItems = [
 ];
 
 interface MenuBarProps {
-  opened: boolean;
-  setOpen: (open: boolean) => void;
+  collapsed: boolean;
+  setCollapsed: (newVal: boolean) => void;
 }

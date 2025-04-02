@@ -1,5 +1,3 @@
-# About View
-
 This app generates code from your TrueBlocks configuration.
 
 - Built with Wails + Mantine

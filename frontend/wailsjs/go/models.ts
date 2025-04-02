@@ -6,8 +6,8 @@ export namespace config {
 	    width: number;
 	    height: number;
 	    lastView: string;
-	    menuOpen: boolean;
-	    helpOpen: boolean;
+	    menuCollapsed: boolean;
+	    helpCollapsed: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new Preferences(source);
@@ -20,8 +20,8 @@ export namespace config {
 	        this.width = source["width"];
 	        this.height = source["height"];
 	        this.lastView = source["lastView"];
-	        this.menuOpen = source["menuOpen"];
-	        this.helpOpen = source["helpOpen"];
+	        this.menuCollapsed = source["menuCollapsed"];
+	        this.helpCollapsed = source["helpCollapsed"];
 	    }
 	}
 

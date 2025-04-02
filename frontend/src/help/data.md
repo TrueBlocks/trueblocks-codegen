@@ -1,5 +1,3 @@
-# Data View
-
 Adjust your application data here.
 
 - Configure templates
