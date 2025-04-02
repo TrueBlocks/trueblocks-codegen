@@ -1,4 +1,4 @@
-import { ToggleChevron } from '@components';
+import { ToggleButton } from '@components';
 import { AppShell, Stack, Text } from '@mantine/core';
 import Markdown from 'markdown-to-jsx';
 import { useEffect, useState } from 'react';
@@ -51,7 +51,7 @@ export const HelpBar = ({
 
   return (
     <AppShell.Aside p="md" style={{ transition: 'width 0.2s ease' }}>
-      <ToggleChevron
+      <ToggleButton
         collapsed={collapsed}
         onToggle={() => setCollapsed(!collapsed)}
         direction="right"

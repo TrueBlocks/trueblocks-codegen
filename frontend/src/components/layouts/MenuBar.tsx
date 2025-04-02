@@ -1,4 +1,4 @@
-import { getBarWidth, ToggleChevron } from '@components';
+import { getBarWidth, ToggleButton } from '@components';
 import { AppShell, Button, Stack } from '@mantine/core';
 import { FaCog, FaDatabase, FaHome, FaInfoCircle } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
@@ -17,7 +17,7 @@ export const MenuBar = ({ collapsed, setCollapsed }: MenuBarProps) => {
     >
       <Stack h="100%" justify="space-between" gap="sm">
         <Stack gap="sm">
-          <ToggleChevron
+          <ToggleButton
             collapsed={collapsed}
             onToggle={() => setCollapsed(!collapsed)}
             direction="left"

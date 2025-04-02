@@ -2,16 +2,16 @@
 
 | Num | Task                                           | Step                                                                  | Status |
 | --- | ---------------------------------------------- | --------------------------------------------------------------------- | ------ |
-| 1   | Dynamic Help Window Header and Collapsed State | Extract route location logic to generate headers (e.g., "Home View")  |        |
-|     |                                                | Remove headers from .md files                                         |        |
-|     |                                                | Implement vertical text display for collapsed state                   |        |
-| 2   | Evaluate Terminology for Toggleable Bars       | List pros/cons of "collapse," "expand," and 2-3 other terms           |        |
-|     |                                                | Select and justify the best term                                      |        |
-|     |                                                | Update codebase with the chosen term (including ToggleChevron rename) |        |
-| 3   | Enhance and Rename ToggleChevron               | Research standard chevron styles for a simple, clean design           |        |
-|     |                                                | Update ToggleChevron styling to match MenuBar icons (Fa*)             |        |
-|     |                                                | Propose 3-5 new names for ToggleChevron based on its purpose          |        |
-|     |                                                | Apply the chosen name across the codebase                             |        |
+| 1   | Dynamic Help Window Header and Collapsed State | Extract route location logic to generate headers (e.g., "Home View")  | Done   |
+|     |                                                | Remove headers from .md files                                         | Done   |
+|     |                                                | Implement vertical text display for collapsed state                   | Done   |
+| 2   | Evaluate Terminology for Toggleable Bars       | List pros/cons of "collapse," "expand," and 2-3 other terms           | Done   |
+|     |                                                | Select and justify the best term                                      | Done   |
+|     |                                                | Update codebase with the chosen term (including ToggleChevron rename) | Done   |
+| 3   | Enhance and Rename ToggleChevron               | Research standard chevron styles for a simple, clean design           | Done   |
+|     |                                                | Update ToggleChevron styling to match MenuBar icons (Fa*)             | Done   |
+|     |                                                | Propose 3-5 new names for ToggleChevron based on its purpose          | Done   |
+|     |                                                | Apply the chosen name across the codebase (we chose ToggleButton)     | Done   |
 | 4   | Discuss Data Strategy                          | Document past data management pitfalls (e.g., useEffect, refreshing)  |        |
 |     |                                                | Discuss concurrency in the backend (e.g., async ops, consistency)     |        |
 |     |                                                | Summarize findings and recommendations                                |        |

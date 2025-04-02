@@ -1,7 +1,7 @@
 import { ActionIcon } from '@mantine/core';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 
-export const ToggleChevron = ({
+export const ToggleButton = ({
   collapsed,
   onToggle,
   direction,
@@ -13,23 +13,23 @@ export const ToggleChevron = ({
   const icon =
     direction === 'left' ? (
       collapsed ? (
-        <FaChevronRight size={16} />
+        <FaAngleDoubleRight />
       ) : (
-        <FaChevronLeft size={16} />
+        <FaAngleDoubleLeft />
       )
     ) : collapsed ? (
-      <FaChevronLeft size={16} />
+      <FaAngleDoubleLeft />
     ) : (
-      <FaChevronRight size={16} />
+      <FaAngleDoubleRight />
     );
 
   const alignment =
     direction === 'left'
       ? collapsed
-        ? 'center'
+        ? 'flex-start'
         : 'flex-end'
       : collapsed
-        ? 'center'
+        ? 'flex-end'
         : 'flex-start';
 
   return (
@@ -39,7 +39,18 @@ export const ToggleChevron = ({
         justifyContent: alignment,
       }}
     >
-      <ActionIcon onClick={onToggle}>{icon}</ActionIcon>
+      <ActionIcon
+        onClick={onToggle}
+        variant="subtle"
+        size="sm"
+        radius="md"
+        color="blue"
+        style={{
+          fontWeight: 'normal',
+        }}
+      >
+        {icon}
+      </ActionIcon>
     </div>
   );
 };
