@@ -3,7 +3,7 @@ import {
   GetPreferences,
   CollapseMenu,
   CollapseHelp,
-} from '../wailsjs/go/main/App';
+} from '../wailsjs/go/app/App';
 import {
   getBarWidth,
   Footer,

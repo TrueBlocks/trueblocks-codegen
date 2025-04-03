@@ -1,4 +1,4 @@
-import { SetLastView } from '../../../wailsjs/go/main/App';
+import { SetLastView } from '../../../wailsjs/go/app/App';
 import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 

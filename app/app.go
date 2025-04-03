@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	"context"
@@ -18,7 +18,7 @@ func NewApp() *App {
 	return &App{}
 }
 
-func (a *App) startup(ctx context.Context) {
+func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
 	prefs, err := config.EnsurePreferencesFile()
@@ -32,7 +32,7 @@ func (a *App) startup(ctx context.Context) {
 	}
 }
 
-func (a *App) domReady(ctx context.Context) {
+func (a *App) DomReady(ctx context.Context) {
 	a.ctx = ctx
 	if a.IsReady() {
 		runtime.WindowSetSize(ctx, a.prefs.Width, a.prefs.Height)
@@ -42,7 +42,7 @@ func (a *App) domReady(ctx context.Context) {
 	}
 }
 
-func (a *App) beforeClose(ctx context.Context) bool {
+func (a *App) BeforeClose(ctx context.Context) bool {
 	x, y := runtime.WindowGetPosition(ctx)
 	w, h := runtime.WindowGetSize(ctx)
 	if a.IsReady() {
