@@ -56,7 +56,7 @@ func (a *App) Startup(ctx context.Context) {
 
 	a.State.Org = org
 	a.State.User = user
-	a.State.App = *appPrefs
+	a.State.App = appPrefs
 	a.State.Project = project
 }
 

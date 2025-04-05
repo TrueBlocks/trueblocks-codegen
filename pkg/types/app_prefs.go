@@ -1,11 +1,11 @@
 package types
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 
 	"github.com/kbinani/screenshot"
-	"gopkg.in/yaml.v3"
 )
 
 type Bounds struct {
@@ -26,57 +26,71 @@ type AppPreferences struct {
 	HelpCollapsed     bool     `json:"helpCollapsed"`
 }
 
-func LoadAppPreferences() (*AppPreferences, error) {
-	var prefs AppPreferences
-	return &prefs, nil
-}
-
 func (p *AppPreferences) String() string {
-	bytes, _ := yaml.Marshal(p)
+	bytes, _ := json.Marshal(p)
 	return string(bytes)
 }
 
-func SaveAppPreferences(prefs *AppPreferences) error {
-	path := filepath.Join(GetConfigBase(), "codeGen", "preferences.yml")
-	data, err := yaml.Marshal(prefs)
+func LoadAppPreferences() (AppPreferences, error) {
+	path := getAppPrefsPath()
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		defaults := AppPreferences{
+			Version:           "1.0",
+			RecentlyUsedFiles: []string{},
+			LastView:          "/",
+			Bounds:            getDefaultBounds(),
+		}
+
+		if err := SaveAppPreferences(&defaults); err != nil {
+			return AppPreferences{}, err
+		}
+
+		return defaults, nil
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return AppPreferences{}, err
+	}
+
+	var appPrefs AppPreferences
+	if err := json.Unmarshal(data, &appPrefs); err != nil {
+		return AppPreferences{}, err
+	}
+
+	return appPrefs, nil
+}
+
+func SaveAppPreferences(appPrefs *AppPreferences) error {
+	path := getAppPrefsPath()
+
+	data, err := json.MarshalIndent(appPrefs, "", "  ")
 	if err != nil {
 		return err
 	}
+
 	err = os.MkdirAll(filepath.Dir(path), 0755)
 	if err != nil {
 		return err
 	}
+
 	return os.WriteFile(path, data, 0644)
 }
 
-func EnsurePreferencesFile() (*AppPreferences, error) {
-	path := filepath.Join(GetConfigBase(), "codeGen", "preferences.yml")
-	if _, err := os.Stat(path); err == nil {
-		return LoadAppPreferences()
-	}
-
+func getDefaultBounds() Bounds {
 	bounds := screenshot.GetDisplayBounds(0)
 	screenW := bounds.Dx()
 	screenH := bounds.Dy()
 
-	w := screenW * 3 / 4
-	h := screenH * 3 / 4
-	x := (screenW - w) / 2
-	y := (screenH - h) / 2
+	ret := Bounds{}
+	ret.Width = screenW * 3 / 4
+	ret.Height = screenH * 3 / 4
+	ret.X = (screenW - ret.Width) / 2
+	ret.Y = (screenH - ret.Height) / 2
+	return ret
+}
 
-	defaults := &AppPreferences{
-		Bounds: Bounds{
-			X:      x,
-			Y:      y,
-			Width:  w,
-			Height: h,
-		},
-		LastView: "/",
-	}
-
-	err := SaveAppPreferences(defaults)
-	if err != nil {
-		return nil, err
-	}
-	return defaults, nil
+func getAppPrefsPath() string {
+	return filepath.Join(GetConfigBase(), "codeGen", "app_prefs.json")
 }
