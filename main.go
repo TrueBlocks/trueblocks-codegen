@@ -15,13 +15,14 @@ import (
 var assets embed.FS
 
 func main() {
-	a := app.NewApp()
+	a, menu := app.NewApp()
 
 	err := wails.Run(&options.App{
 		Title:         "TrueBlocks codeGen",
 		Width:         1024,
 		Height:        768,
 		StartHidden:   true,
+		Menu:          menu,
 		OnStartup:     a.Startup,
 		OnDomReady:    a.DomReady,
 		OnBeforeClose: a.BeforeClose,

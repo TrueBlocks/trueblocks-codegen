@@ -1,78 +1,64 @@
 package types
 
-import "github.com/TrueBlocks/trueblocks-codeGen/pkg/config"
-
 type State struct {
-	value string
 	dirty bool
-	prefs config.Preferences
-}
-
-func (s *State) SetValue(v string) {
-	if s.value != v {
-		s.value = v
-		s.dirty = true
-	}
-}
-
-func (s *State) GetValue() string {
-	return s.value
+	App   AppPreferences
 }
 
 func (s *State) SetLastFile(path string) {
-	if s.prefs.LastFile != path {
-		s.prefs.LastFile = path
+	if s.App.LastFile != path {
+		s.App.LastFile = path
 		s.dirty = true
 	}
 }
 
 func (s *State) GetLastFile() string {
-	return s.prefs.LastFile
+	return s.App.LastFile
 }
 
 func (s *State) SetLastView(view string) {
-	if s.prefs.LastView != view {
-		s.prefs.LastView = view
+	if s.App.LastView != view {
+		s.App.LastView = view
 		s.dirty = true
 	}
 }
 
 func (s *State) GetLastView() string {
-	return s.prefs.LastView
+	return s.App.LastView
 }
 
 func (s *State) SetMenuCollapsed(val bool) {
-	if s.prefs.MenuCollapsed != val {
-		s.prefs.MenuCollapsed = val
+	if s.App.MenuCollapsed != val {
+		s.App.MenuCollapsed = val
 		s.dirty = true
 	}
 }
 
 func (s *State) GetMenuCollapsed() bool {
-	return s.prefs.MenuCollapsed
+	return s.App.MenuCollapsed
 }
 
 func (s *State) SetHelpCollapsed(val bool) {
-	if s.prefs.HelpCollapsed != val {
-		s.prefs.HelpCollapsed = val
+	if s.App.HelpCollapsed != val {
+		s.App.HelpCollapsed = val
 		s.dirty = true
 	}
 }
 
 func (s *State) GetHelpCollapsed() bool {
-	return s.prefs.HelpCollapsed
+	return s.App.HelpCollapsed
 }
 
 func (s *State) SetWindow(x, y, w, h int) {
-	if s.prefs.X != x || s.prefs.Y != y || s.prefs.Width != w || s.prefs.Height != h {
-		s.prefs.X = x
-		s.prefs.Y = y
-		s.prefs.Width = w
-		s.prefs.Height = h
+	if s.App.Bounds.X != x || s.App.Bounds.Y != y || s.App.Bounds.Width != w || s.App.Bounds.Height != h {
+		s.App.Bounds.X = x
+		s.App.Bounds.Y = y
+		s.App.Bounds.Width = w
+		s.App.Bounds.Height = h
 		s.dirty = true
 	}
 }
 
 func (s *State) GetWindow() (int, int, int, int) {
-	return s.prefs.X, s.prefs.Y, s.prefs.Width, s.prefs.Height
+	return s.App.Bounds.X, s.App.Bounds.Y, s.App.Bounds.Width, s.App.Bounds.Height
 }

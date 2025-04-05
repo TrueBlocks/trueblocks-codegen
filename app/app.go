@@ -4,33 +4,31 @@ import (
 	"context"
 	"time"
 
-	"github.com/TrueBlocks/trueblocks-codeGen/pkg/config"
+	"github.com/TrueBlocks/trueblocks-codeGen/pkg/types"
+	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type App struct {
 	ctx   context.Context
-	prefs *config.Preferences
+	State *types.State
 }
 
-func NewApp() *App {
-	return &App{}
+func NewApp() (*App, *menu.Menu) {
+	app := &App{
+	}
+	return app, app.buildAppMenu()
 }
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
-
-	prefs, err := config.EnsurePreferencesFile()
-	if err == nil {
-		a.prefs = prefs
-	}
 }
 
 func (a *App) DomReady(ctx context.Context) {
 	a.ctx = ctx
 	if a.IsReady() {
-		runtime.WindowSetSize(ctx, a.prefs.Width, a.prefs.Height)
-		runtime.WindowSetPosition(ctx, a.prefs.X, a.prefs.Y)
+		runtime.WindowSetSize(ctx, a.State.App.Bounds.Width, a.State.App.Bounds.Height)
+		runtime.WindowSetPosition(ctx, a.State.App.Bounds.X, a.State.App.Bounds.Y)
 		runtime.WindowShow(ctx)
 		go a.watchWindowBounds() // if the window moves or resizes, we want to know
 	}
@@ -39,13 +37,7 @@ func (a *App) DomReady(ctx context.Context) {
 func (a *App) BeforeClose(ctx context.Context) bool {
 	x, y := runtime.WindowGetPosition(ctx)
 	w, h := runtime.WindowGetSize(ctx)
-	if a.IsReady() {
-		a.prefs.X = x
-		a.prefs.Y = y
-		a.prefs.Width = w
-		a.prefs.Height = h
-		_ = config.SavePreferences(a.prefs)
-	}
+	a.SaveBounds(x, y, w, h)
 	return false // false = allow window to close
 }
 
@@ -68,44 +60,46 @@ func (a *App) watchWindowBounds() {
 }
 
 func (a *App) SaveBounds(x, y, w, h int) {
-	if a.IsReady() {
-		a.prefs.X = x
-		a.prefs.Y = y
-		a.prefs.Width = w
-		a.prefs.Height = h
-		_ = config.SavePreferences(a.prefs)
+	if !a.IsReady() {
+		return
 	}
+
+	a.State.App.Bounds = types.Bounds{
+		X:      x,
+		Y:      y,
+		Width:  w,
+		Height: h,
+	}
+
+	_ = types.SaveAppPreferences(&a.State.App)
 }
 
 func (a *App) IsReady() bool {
-	return a.ctx != nil && a.prefs != nil
+	return a.ctx != nil
 }
 
-func (a *App) GetPreferences() *config.Preferences {
-	return a.prefs
+func (a *App) GetPreferences() *types.AppPreferences {
+	return &a.State.App
 }
 
 func (a *App) CollapseMenu(collapse bool) {
-	if a.prefs == nil {
-		return
-	}
-	a.prefs.MenuCollapsed = collapse
-	_ = config.SavePreferences(a.prefs)
+	a.State.App.MenuCollapsed = collapse
+	_ = types.SaveAppPreferences(&a.State.App)
 }
 
 func (a *App) CollapseHelp(collapsed bool) {
-	if a.prefs == nil {
-		return
-	}
-	a.prefs.HelpCollapsed = collapsed
-	_ = config.SavePreferences(a.prefs)
+	a.State.App.HelpCollapsed = collapsed
+	_ = types.SaveAppPreferences(&a.State.App)
 }
 
 func (a *App) SetLastView(view string) {
-	if a.prefs == nil {
-		return
+	a.State.App.LastView = view
+	_ = types.SaveAppPreferences(&a.State.App)
+}
+
+func (a *App) IsReadyStr() string {
+	if a.IsReady() {
+		return "true"
 	}
-	a.prefs.LastView = view
-	_ = config.SavePreferences(a.prefs)
-	// fmt.Println("SetLastView called with:", view)
+	return "false"
 }
