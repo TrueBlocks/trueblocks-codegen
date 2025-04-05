@@ -22,18 +22,3 @@ func LoadPreferences() (*Preferences, error) {
 	}
 	return &prefs, nil
 }
-
-func LoadSettings() (*Settings, error) {
-	k := koanf.New(".")
-	path := filepath.Join(GetConfigBase(), "settings.yml")
-	err := k.Load(file.Provider(path), yaml.Parser())
-	if err != nil {
-		return nil, err
-	}
-	var settings Settings
-	err = k.Unmarshal("", &settings)
-	if err != nil {
-		return nil, err
-	}
-	return &settings, nil
-}

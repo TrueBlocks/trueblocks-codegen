@@ -8,8 +8,6 @@ export function CollapseMenu(arg1:boolean):Promise<void>;
 
 export function GetPreferences():Promise<config.Preferences>;
 
-export function GetTemplateFolder():Promise<string>;
-
 export function IsReady():Promise<boolean>;
 
 export function SaveBounds(arg1:number,arg2:number,arg3:number,arg4:number):Promise<void>;

@@ -9,9 +9,8 @@ import (
 )
 
 type App struct {
-	ctx      context.Context
-	prefs    *config.Preferences
-	settings *config.Settings
+	ctx   context.Context
+	prefs *config.Preferences
 }
 
 func NewApp() *App {
@@ -24,11 +23,6 @@ func (a *App) Startup(ctx context.Context) {
 	prefs, err := config.EnsurePreferencesFile()
 	if err == nil {
 		a.prefs = prefs
-	}
-
-	settings, err := config.EnsureSettingsFile()
-	if err == nil {
-		a.settings = settings
 	}
 }
 
@@ -85,13 +79,6 @@ func (a *App) SaveBounds(x, y, w, h int) {
 
 func (a *App) IsReady() bool {
 	return a.ctx != nil && a.prefs != nil
-}
-
-func (a *App) GetTemplateFolder() string {
-	if a.settings != nil {
-		return a.settings.TemplateFolder
-	}
-	return ""
 }
 
 func (a *App) GetPreferences() *config.Preferences {

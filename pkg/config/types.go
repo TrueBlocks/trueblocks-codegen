@@ -17,12 +17,3 @@ func (p *Preferences) String() string {
 	bytes, _ := yaml.Marshal(p)
 	return string(bytes)
 }
-
-type Settings struct {
-	TemplateFolder string `yaml:"template_folder"`
-}
-
-func (s *Settings) String() string {
-	bytes, _ := yaml.Marshal(s)
-	return string(bytes)
-}

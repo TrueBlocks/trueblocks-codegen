@@ -14,10 +14,6 @@ export function GetPreferences() {
   return window['go']['app']['App']['GetPreferences']();
 }
 
-export function GetTemplateFolder() {
-  return window['go']['app']['App']['GetTemplateFolder']();
-}
-
 export function IsReady() {
   return window['go']['app']['App']['IsReady']();
 }

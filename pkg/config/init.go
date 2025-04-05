@@ -36,18 +36,3 @@ func EnsurePreferencesFile() (*Preferences, error) {
 	}
 	return defaults, nil
 }
-
-func EnsureSettingsFile() (*Settings, error) {
-	path := filepath.Join(GetConfigBase(), "settings.yml")
-	if _, err := os.Stat(path); err == nil {
-		return LoadSettings()
-	}
-	defaults := &Settings{
-		TemplateFolder: "./templates",
-	}
-	err := SaveSettings(defaults)
-	if err != nil {
-		return nil, err
-	}
-	return defaults, nil
-}
