@@ -16,11 +16,14 @@ type Bounds struct {
 }
 
 type AppPreferences struct {
-	Bounds        Bounds `json:"bounds"`
-	LastFile      string `json:"lastFile"`
-	LastView      string `json:"lastView"`
-	MenuCollapsed bool   `json:"menuCollapsed"`
-	HelpCollapsed bool   `json:"helpCollapsed"`
+	Version           string   `json:"version"`
+	Name              string   `json:"name"`
+	Bounds            Bounds   `json:"bounds"`
+	RecentlyUsedFiles []string `json:"recently_used_files"`
+	LastFile          string   `json:"lastFile"`
+	LastView          string   `json:"lastView"`
+	MenuCollapsed     bool     `json:"menuCollapsed"`
+	HelpCollapsed     bool     `json:"helpCollapsed"`
 }
 
 func LoadAppPreferences() (*AppPreferences, error) {

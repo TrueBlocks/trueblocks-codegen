@@ -16,12 +16,48 @@ type App struct {
 
 func NewApp() (*App, *menu.Menu) {
 	app := &App{
+		State: &types.State{
+			Org:     types.OrgPreferences{},
+			User:    types.UserPreferences{},
+			App:     types.AppPreferences{},
+			Project: types.Project{},
+			Dirty:   false,
+		},
 	}
 	return app, app.buildAppMenu()
 }
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
+
+	org, err := types.LoadOrgPreferences()
+	if err != nil {
+		a.emitError(a.ctx, "Loading org preferences failed", err)
+		return
+	}
+
+	user, err := types.LoadUserPreferences()
+	if err != nil {
+		a.emitError(a.ctx, "Loading user preferences failed", err)
+		return
+	}
+
+	appPrefs, err := types.LoadAppPreferences()
+	if err != nil {
+		a.emitError(a.ctx, "Loading app preferences failed", err)
+		return
+	}
+
+	project, err := types.LoadProjectPreferences(appPrefs.RecentlyUsedFiles)
+	if err != nil {
+		a.emitError(a.ctx, "Loading project preferences failed", err)
+		return
+	}
+
+	a.State.Org = org
+	a.State.User = user
+	a.State.App = *appPrefs
+	a.State.Project = project
 }
 
 func (a *App) DomReady(ctx context.Context) {

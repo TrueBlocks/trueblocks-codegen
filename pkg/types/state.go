@@ -1,14 +1,18 @@
 package types
 
 type State struct {
-	dirty bool
-	App   AppPreferences
+	Org     OrgPreferences  `json:"org"`
+	User    UserPreferences `json:"user"`
+	App     AppPreferences  `json:"app"`
+	Project Project         `json:"project"`
+	Dirty   bool            `json:"dirty"`
+	Path    string          `json:"path"`
 }
 
 func (s *State) SetLastFile(path string) {
 	if s.App.LastFile != path {
 		s.App.LastFile = path
-		s.dirty = true
+		s.Dirty = true
 	}
 }
 
@@ -19,7 +23,7 @@ func (s *State) GetLastFile() string {
 func (s *State) SetLastView(view string) {
 	if s.App.LastView != view {
 		s.App.LastView = view
-		s.dirty = true
+		s.Dirty = true
 	}
 }
 
@@ -30,7 +34,7 @@ func (s *State) GetLastView() string {
 func (s *State) SetMenuCollapsed(val bool) {
 	if s.App.MenuCollapsed != val {
 		s.App.MenuCollapsed = val
-		s.dirty = true
+		s.Dirty = true
 	}
 }
 
@@ -41,7 +45,7 @@ func (s *State) GetMenuCollapsed() bool {
 func (s *State) SetHelpCollapsed(val bool) {
 	if s.App.HelpCollapsed != val {
 		s.App.HelpCollapsed = val
-		s.dirty = true
+		s.Dirty = true
 	}
 }
 
@@ -55,7 +59,7 @@ func (s *State) SetWindow(x, y, w, h int) {
 		s.App.Bounds.Y = y
 		s.App.Bounds.Width = w
 		s.App.Bounds.Height = h
-		s.dirty = true
+		s.Dirty = true
 	}
 }
 

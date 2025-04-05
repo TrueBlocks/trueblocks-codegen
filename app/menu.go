@@ -1,7 +1,10 @@
 package app
 
 import (
+	"context"
+
 	"github.com/wailsapp/wails/v2/pkg/menu"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (a *App) FileNew(data *menu.CallbackData) {
@@ -24,10 +27,10 @@ func (a *App) buildAppMenu() *menu.Menu {
 	return appMenu
 }
 
-// func (a *App) emitError(ctx context.Context, source string, err error) {
-// 	msg := "Error: " + source + ": " + err.Error()
-// 	runtime.EventsEmit(ctx, "statusbar:log", msg)
-// }
+func (a *App) emitError(ctx context.Context, source string, err error) {
+	msg := "Error: " + source + ": " + err.Error()
+	runtime.EventsEmit(ctx, "statusbar:log", msg)
+}
 
 // func (a *App) emitStatus(ctx context.Context, msg string) {
 // 	log.Println(msg)
