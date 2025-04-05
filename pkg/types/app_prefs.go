@@ -37,7 +37,7 @@ func (p *AppPreferences) String() string {
 }
 
 func SaveAppPreferences(prefs *AppPreferences) error {
-	path := filepath.Join(GetConfigBase(), "preferences.yml")
+	path := filepath.Join(GetConfigBase(), "codeGen", "preferences.yml")
 	data, err := yaml.Marshal(prefs)
 	if err != nil {
 		return err
@@ -50,7 +50,7 @@ func SaveAppPreferences(prefs *AppPreferences) error {
 }
 
 func EnsurePreferencesFile() (*AppPreferences, error) {
-	path := filepath.Join(GetConfigBase(), "preferences.yml")
+	path := filepath.Join(GetConfigBase(), "codeGen", "preferences.yml")
 	if _, err := os.Stat(path); err == nil {
 		return LoadAppPreferences()
 	}

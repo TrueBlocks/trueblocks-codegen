@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"testing"
 )
 
 var configBase string
@@ -14,7 +15,7 @@ func GetConfigBase() string {
 	}
 
 	if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
-		return filepath.Join(xdg, "TrueBlocks", "codeGen")
+		return filepath.Join(xdg, "TrueBlocks")
 	}
 
 	home, err := os.UserHomeDir()
@@ -24,15 +25,16 @@ func GetConfigBase() string {
 
 	switch runtime.GOOS {
 	case "darwin":
-		return filepath.Join(home, "Library", "Application Support", "TrueBlocks", "codeGen")
+		return filepath.Join(home, "Library", "Application Support", "TrueBlocks")
 	case "windows":
-		return filepath.Join(os.Getenv("AppData"), "TrueBlocks", "codeGen")
+		return filepath.Join(os.Getenv("AppData"), "TrueBlocks")
 	default:
-		return filepath.Join(home, ".config", "TrueBlocks", "codeGen")
+		return filepath.Join(home, ".config", "TrueBlocks")
 	}
 }
 
-func SetConfigBaseForTest(path string) func() {
+func SetConfigBaseForTest(t *testing.T, path string) func() {
+	t.Helper()
 	original := configBase
 	configBase = path
 	return func() {

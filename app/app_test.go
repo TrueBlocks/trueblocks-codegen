@@ -22,7 +22,7 @@ func TestIsReady(t *testing.T) {
 
 func TestSaveBounds_SavesToPreferences(t *testing.T) {
 	tmp := t.TempDir()
-	defer types.SetConfigBaseForTest(tmp)()
+	defer types.SetConfigBaseForTest(t, tmp)()
 
 	app := &App{
 		ctx: context.Background(),
@@ -39,6 +39,7 @@ func TestSaveBounds_SavesToPreferences(t *testing.T) {
 	}
 
 	if loaded.Bounds.X != 111 || loaded.Bounds.Y != 222 || loaded.Bounds.Width != 333 || loaded.Bounds.Height != 444 {
-		t.Fatalf("Unexpected saved bounds: %+v", loaded)
+		t.Fatalf("Unexpected saved bounds:\n  x: %d\n  y: %d\n  width: %d\n  height: %d",
+			loaded.Bounds.X, loaded.Bounds.Y, loaded.Bounds.Width, loaded.Bounds.Height)
 	}
 }
