@@ -30,3 +30,13 @@ type Project struct {
 	Preferences map[string]string `json:"preferences" yaml:"preferences"`
 	Data        any               `json:"data" yaml:"data"`
 }
+
+type State struct {
+	Org     OrgPreferences    // Loaded from org_prefs.yaml
+	User    UserPreferences   // Loaded from user_prefs.yaml
+	App     AppPreferences    // Loaded from app-specific prefs.yaml
+	Project Project           // Loaded from user-saved project file
+	Merged  map[string]string // Flattened final preferences
+	Dirty   bool              // True if project was modified
+	Path    string            // Path to the current project file
+}
