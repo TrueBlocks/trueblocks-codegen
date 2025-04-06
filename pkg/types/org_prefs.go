@@ -26,7 +26,7 @@ func LoadOrgPreferences() (OrgPreferences, error) {
 			TelemetryEnabled:   false,
 			Theme:              "dark",
 			Language:           "en",
-			DeveloperName:      "TrueBlocks, LLC",
+			DeveloperName:      "TrueBlocks",
 			LogLevel:           "info",
 			EnableExperimental: false,
 			SupportURL:         "https://trueblocks.io/support",

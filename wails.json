@@ -7,7 +7,7 @@
   "frontend:dev:watcher": "yarn dev",
   "frontend:dev:serverUrl": "http://localhost:5173",
   "author": {
-    "name": "TrueBlocks, LLC",
+    "name": "TrueBlocks",
     "email": "info@quickblocks.io"
   }
 }
