@@ -38,6 +38,10 @@ export function GetFilenameOld() {
   return window['go']['app']['App']['GetFilenameOld']();
 }
 
+export function GetPreference(arg1) {
+  return window['go']['app']['App']['GetPreference'](arg1);
+}
+
 export function GetPreferences() {
   return window['go']['app']['App']['GetPreferences']();
 }

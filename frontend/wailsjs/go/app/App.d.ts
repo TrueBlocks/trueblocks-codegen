@@ -22,6 +22,8 @@ export function GetFilename():Promise<app.FileStatus>;
 
 export function GetFilenameOld():Promise<string>;
 
+export function GetPreference(arg1:string):Promise<string>;
+
 export function GetPreferences():Promise<types.AppPreferences>;
 
 export function IsReady():Promise<boolean>;

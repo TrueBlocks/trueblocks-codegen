@@ -139,3 +139,7 @@ func (a *App) IsReadyStr() string {
 	}
 	return "false"
 }
+
+func (a *App) GetPreference(key string) string {
+	return a.State.GetPreference(key)
+}

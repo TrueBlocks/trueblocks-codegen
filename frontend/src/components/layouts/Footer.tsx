@@ -1,7 +1,7 @@
+import { GetFilename, GetPreference } from '../../../wailsjs/go/app/App';
 import { getBarWidth } from '@components';
 import { AppShell, Flex, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { GetFilename } from 'wailsjs/go/app/App';
 import { EventsOn } from 'wailsjs/runtime/runtime';
 
 interface FileStatus {
@@ -10,13 +10,23 @@ interface FileStatus {
 }
 
 export const Footer = ({ collapsed }: { collapsed: boolean }) => {
+  var [org, setOrg] = useState<string>('TrueBlocks, LLC');
+
+  useEffect(() => {
+    const fetchOrgName = async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      setOrg((await GetPreference('org.developer_name')) as string);
+    };
+    void fetchOrgName();
+  }, []);
+
   return (
     <AppShell.Footer ml={getBarWidth(collapsed, 1) - 1}>
       <Flex h="100%" px="md" align="center" justify="space-between">
         <Text size="sm">
           <FilePanel />
         </Text>
-        <Text size="sm">Footer Content © 2025</Text>
+        <Text size="sm">{org} © 2025</Text>
         <Text size="sm">Social</Text>
       </Flex>
     </AppShell.Footer>
@@ -28,7 +38,6 @@ export const FilePanel = () => {
 
   useEffect(() => {
     const fetchFilename = async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setStatus((await GetFilename()) as FileStatus);
     };
     void fetchFilename();
