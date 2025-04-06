@@ -2,17 +2,17 @@
 
 ```mermaid
 erDiagram
-    DEVELOPER {
-        string name
-    }
-
-    APPLICATION {
+    ORGANIZATION {
         string name
     }
 
     USER {
         string username
         string address
+    }
+
+    APPLICATION {
+        string name
     }
 
     PROJECT {
@@ -25,11 +25,11 @@ erDiagram
         string value
     }
 
-    DEVELOPER ||--o{ APPLICATION : "creates"
+    ORGANIZATION ||--o{ APPLICATION : "creates"
     APPLICATION ||--o{ USER : "used by"
     USER ||--o{ PROJECT : "creates"
 
-    DEVELOPER ||--o{ PREFERENCE : "defines default"
+    ORGANIZATION ||--o{ PREFERENCE : "defines default"
     APPLICATION ||--o{ PREFERENCE : "customizes"
     USER ||--o{ PREFERENCE : "personalizes"
     PROJECT ||--o{ PREFERENCE : "overrides"

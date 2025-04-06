@@ -160,7 +160,7 @@ func (a *App) buildAppMenu() *menu.Menu {
 		runtime.BrowserOpenURL(a.ctx, "https://trueblocks.io/about")
 	})
 	help.AddText("Report Issue", nil, func(_ *menu.CallbackData) {
-		runtime.BrowserOpenURL(a.ctx, "https://github.com/TrueBlocks/trueblocks/issues")
+		runtime.BrowserOpenURL(a.ctx, "https://github.com/TrueBlocks/trueblocks-codeGen/issues")
 	})
 
 	return appMenu
