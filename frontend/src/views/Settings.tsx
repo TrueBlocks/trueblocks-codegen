@@ -1,11 +1,11 @@
-import { Stack, Text } from '@mantine/core';
+import { Box, Stack, Text } from '@mantine/core';
 
 export const Settings = () => {
   return (
-    <Stack
-      style={{ height: '100%', backgroundColor: 'orange', color: 'purple' }}
-    >
-      <Text>THIS IS THE SETTINGS SCREEN</Text>
-    </Stack>
+    <Box style={{ backgroundColor: 'orange', minHeight: '100%' }}>
+      <Stack style={{ color: 'purple' }}>
+        <Text>THIS IS THE SETTINGS SCREEN</Text>
+      </Stack>
+    </Box>
   );
 };

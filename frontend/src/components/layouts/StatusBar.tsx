@@ -25,6 +25,8 @@ export const StatusBar = () => {
   }, [timeoutId]);
 
   return (
-    <Text style={{ backgroundColor: 'white', color: 'black' }}>{message}</Text>
+    <Text style={{ backgroundColor: '#cffafe', color: 'black' }}>
+      {message}
+    </Text>
   );
 };
