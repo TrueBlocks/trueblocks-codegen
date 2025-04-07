@@ -1,4 +1,5 @@
 import { GetFilename, GetPreference } from '../../../wailsjs/go/app/App';
+import { Socials } from '../ui/Socials';
 import { getBarWidth } from '@components';
 import { AppShell, Flex, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
@@ -27,7 +28,7 @@ export const Footer = ({ collapsed }: { collapsed: boolean }) => {
           <FilePanel />
         </Text>
         <Text size="sm">{org} © 2025</Text>
-        <Text size="sm">Social</Text>
+        <Socials />
       </Flex>
     </AppShell.Footer>
   );
