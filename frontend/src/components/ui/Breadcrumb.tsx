@@ -20,7 +20,7 @@ export const Breadcrumb = () => {
   };
 
   return (
-    <Breadcrumbs separator=">" px="sm" py={2} bg="gray.1">
+    <Breadcrumbs separator=">" px="md" style={{ marginTop: '1rem' }}>
       {breadcrumbItems.map((item, index) => (
         <Anchor
           key={index}
@@ -28,7 +28,7 @@ export const Breadcrumb = () => {
           onClick={() => handleNavigate(item.path)}
           style={{ cursor: 'pointer' }}
         >
-          <Text size="sm">{item.title}</Text>
+          <Text size="md">{item.title}</Text>
         </Anchor>
       ))}
     </Breadcrumbs>
