@@ -15,8 +15,7 @@ export const Footer = ({ collapsed }: { collapsed: boolean }) => {
 
   useEffect(() => {
     const fetchOrgName = async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setOrg((await GetPreference('org.developer_name')) as string);
+      setOrg(await GetPreference('org.developer_name'));
     };
     void fetchOrgName();
   }, []);

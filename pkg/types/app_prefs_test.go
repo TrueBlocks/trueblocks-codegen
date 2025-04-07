@@ -72,7 +72,7 @@ func TestLoadAppPreferences(t *testing.T) {
 			RecentlyUsedFiles: []string{"/tmp/one", "/tmp/two"},
 		}
 
-		file.EstablishFolder(filepath.Join(tmp, "codeGen"))
+		_ = file.EstablishFolder(filepath.Join(tmp, "codeGen"))
 		path := filepath.Join(tmp, "codeGen", "app_prefs.json")
 		data, _ := json.MarshalIndent(expected, "", "  ")
 		if err := os.WriteFile(path, data, 0644); err != nil {

@@ -192,7 +192,7 @@ func (s *State) SetPreference(key, value string, persist ...bool) {
 		if changed := setStructField(reflect.ValueOf(&s.Org).Elem(), innerKey, value); changed {
 			s.Dirty = true
 			if shouldPersist {
-				SaveOrgPreferences(&s.Org)
+				_ = SaveOrgPreferences(&s.Org)
 			}
 		}
 
@@ -201,7 +201,7 @@ func (s *State) SetPreference(key, value string, persist ...bool) {
 		if changed := setStructField(reflect.ValueOf(&s.User).Elem(), innerKey, value); changed {
 			s.Dirty = true
 			if shouldPersist {
-				SaveUserPreferences(&s.User)
+				_ = SaveUserPreferences(&s.User)
 			}
 		}
 
@@ -210,7 +210,7 @@ func (s *State) SetPreference(key, value string, persist ...bool) {
 		if changed := setStructField(reflect.ValueOf(&s.App).Elem(), innerKey, value); changed {
 			s.Dirty = true
 			if shouldPersist {
-				SaveAppPreferences(&s.App)
+				_ = SaveAppPreferences(&s.App)
 			}
 		}
 	}

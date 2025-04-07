@@ -136,7 +136,7 @@ func TestFileSaveAs(t *testing.T) {
 		app, dir, filePath := getTestApp(t, true /* dirty */)
 		defer types.SetConfigBaseForTest(t, dir)()
 
-		os.WriteFile(filePath, []byte("{}"), 0644)
+		_ = os.WriteFile(filePath, []byte("{}"), 0644)
 
 		err := app.fileSaveAs(filePath, false)
 		if !errors.Is(err, ErrOverwriteNotConfirmed) {
@@ -156,7 +156,7 @@ func TestFileOpen(t *testing.T) {
 			Name:    "trueblocks-project",
 		}
 		data, _ := json.Marshal(proj)
-		os.WriteFile(filePath, data, 0644)
+		_ = os.WriteFile(filePath, data, 0644)
 
 		err := app.fileOpen(filePath)
 		if err != nil {
@@ -213,7 +213,7 @@ func TestFileOpen(t *testing.T) {
 		app, dir, filePath := getTestApp(t, false /* dirty */)
 		defer types.SetConfigBaseForTest(t, dir)()
 
-		os.WriteFile(filePath, []byte("{invalid json"), 0644)
+		_ = os.WriteFile(filePath, []byte("{invalid json"), 0644)
 		err := app.fileOpen(filePath)
 		if !errors.Is(err, ErrDeserializeFailed) {
 			t.Fatalf("Expected ErrDeserializeFailed, got: %v", err)
