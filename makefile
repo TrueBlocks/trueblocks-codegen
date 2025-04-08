@@ -4,3 +4,5 @@ update:
 	@go mod tidy
 	@cd frontend ; yarn upgrade --latest ; cd -
 
+lint:
+	@yarn lint
