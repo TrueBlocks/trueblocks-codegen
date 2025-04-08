@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"embed"
 	"time"
 
 	"github.com/TrueBlocks/trueblocks-codeGen/pkg/types"
@@ -10,12 +11,14 @@ import (
 )
 
 type App struct {
-	ctx   context.Context
-	State *types.State
+	ctx    context.Context
+	Assets embed.FS
+	State  *types.State
 }
 
-func NewApp() (*App, *menu.Menu) {
+func NewApp(assets embed.FS) (*App, *menu.Menu) {
 	app := &App{
+		Assets: assets,
 		State: &types.State{
 			Org:     types.OrgPreferences{},
 			User:    types.UserPreferences{},

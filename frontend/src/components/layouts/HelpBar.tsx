@@ -3,11 +3,7 @@ import { AppShell, Stack, Text } from '@mantine/core';
 import Markdown from 'markdown-to-jsx';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-
-const helpFiles = import.meta.glob('../../help/*.md', {
-  query: '?raw',
-  import: 'default',
-}) as Record<string, () => Promise<string>>;
+import { GetMarkdown } from 'wailsjs/go/app/App';
 
 export const HelpBar = ({
   collapsed,
@@ -22,30 +18,21 @@ export const HelpBar = ({
   useEffect(() => {
     const route = location.pathname.split('/')[1] || 'home';
     const headerText = `${route.charAt(0).toUpperCase() + route.slice(1)} View`;
-    const helpFileName = `${route}.md`;
-    const filePath = Object.keys(helpFiles).find((key) =>
-      key.endsWith(`/help/${helpFileName}`),
-    );
-
-    const loadMarkdown = async () => {
-      if (!filePath) {
-        setMarkdown(`# ${headerText}\n\nNo help content found.`);
-        return;
-      }
+    const fetchMarkdown = async () => {
       try {
-        const content = await helpFiles[filePath]();
+        const content = await GetMarkdown('help', route);
         setMarkdown(`# ${headerText}\n\n${content}`);
-      } catch (err) {
-        setMarkdown(
-          `# ${headerText}\n\nError loading help content: ${String(err)}`,
-        );
+      } catch (rawErr) {
+        const errMsg =
+          rawErr instanceof Error ? rawErr.message : String(rawErr);
+        setMarkdown(`# ${headerText}\n\nError loading help content: ${errMsg}`);
       }
     };
 
     if (collapsed) {
       setMarkdown(`# ${headerText}\n\nLoading...`);
     } else {
-      void loadMarkdown();
+      void fetchMarkdown();
     }
   }, [location, collapsed]);
 

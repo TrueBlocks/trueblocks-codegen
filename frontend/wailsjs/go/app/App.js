@@ -42,6 +42,10 @@ export function GetFilenameOld() {
   return window['go']['app']['App']['GetFilenameOld']();
 }
 
+export function GetMarkdown(arg1, arg2) {
+  return window['go']['app']['App']['GetMarkdown'](arg1, arg2);
+}
+
 export function GetPreference(arg1) {
   return window['go']['app']['App']['GetPreference'](arg1);
 }
@@ -52,6 +56,10 @@ export function IsReady() {
 
 export function IsReadyStr() {
   return window['go']['app']['App']['IsReadyStr']();
+}
+
+export function Logger(arg1) {
+  return window['go']['app']['App']['Logger'](arg1);
 }
 
 export function SaveBounds(arg1, arg2, arg3, arg4) {

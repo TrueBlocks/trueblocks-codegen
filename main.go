@@ -11,11 +11,11 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
 
-//go:embed all:frontend/dist
+//go:embed all:frontend/dist all:frontend/src/assets/help all:frontend/src/assets/views
 var assets embed.FS
 
 func main() {
-	a, menu := app.NewApp()
+	a, menu := app.NewApp(assets)
 
 	err := wails.Run(&options.App{
 		Title:         "TrueBlocks codeGen",

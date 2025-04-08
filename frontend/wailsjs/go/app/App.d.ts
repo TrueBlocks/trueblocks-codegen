@@ -24,11 +24,15 @@ export function GetFilename():Promise<app.FileStatus>;
 
 export function GetFilenameOld():Promise<string>;
 
+export function GetMarkdown(arg1:string,arg2:string):Promise<string>;
+
 export function GetPreference(arg1:string):Promise<string>;
 
 export function IsReady():Promise<boolean>;
 
 export function IsReadyStr():Promise<string>;
+
+export function Logger(arg1:string):Promise<void>;
 
 export function SaveBounds(arg1:number,arg2:number,arg3:number,arg4:number):Promise<void>;
 
