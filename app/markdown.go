@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"io/fs"
 	"path/filepath"
 	"strings"
@@ -11,9 +12,16 @@ func (a *App) GetMarkdown(folder, route string) string {
 	if err != nil {
 		return err.Error()
 	}
-	data, err := fs.ReadFile(helpFS, strings.ToLower(route)+".md")
-	if err != nil {
+
+	lan := a.GetPreference("user.language")
+	if data, err := fs.ReadFile(helpFS, strings.ToLower(route)+"."+lan+".md"); err == nil {
+		return string(data)
+	} else if errors.Is(err, fs.ErrNotExist) {
+		if data, err = fs.ReadFile(helpFS, strings.ToLower(route)+".md"); err == nil {
+			return string(data)
+		}
+		return err.Error()
+	} else {
 		return err.Error()
 	}
-	return string(data)
 }
