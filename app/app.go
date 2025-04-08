@@ -114,7 +114,7 @@ func (a *App) IsReady() bool {
 	return a.ctx != nil
 }
 
-func (a *App) GetPreferences() *types.AppPreferences {
+func (a *App) GetAppPreferences() *types.AppPreferences {
 	return &a.State.App
 }
 

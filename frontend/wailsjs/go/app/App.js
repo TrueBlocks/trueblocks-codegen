@@ -30,6 +30,10 @@ export function FileSaveAs(arg1) {
   return window['go']['app']['App']['FileSaveAs'](arg1);
 }
 
+export function GetAppPreferences() {
+  return window['go']['app']['App']['GetAppPreferences']();
+}
+
 export function GetFilename() {
   return window['go']['app']['App']['GetFilename']();
 }
@@ -40,10 +44,6 @@ export function GetFilenameOld() {
 
 export function GetPreference(arg1) {
   return window['go']['app']['App']['GetPreference'](arg1);
-}
-
-export function GetPreferences() {
-  return window['go']['app']['App']['GetPreferences']();
 }
 
 export function IsReady() {

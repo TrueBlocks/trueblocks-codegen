@@ -1,6 +1,6 @@
 import {
   IsReady,
-  GetPreferences,
+  GetAppPreferences,
   CollapseMenu,
   CollapseHelp,
 } from '../wailsjs/go/app/App';
@@ -52,7 +52,7 @@ const RoutedApp = () => {
       while (attempts < maxAttempts) {
         const isReady = await IsReady();
         if (isReady) {
-          const prefs = await GetPreferences();
+          const prefs = await GetAppPreferences();
           collapseMenu(prefs.menuCollapsed);
           collapseHelp(prefs.helpCollapsed);
           setLastView(prefs.lastView || '/');

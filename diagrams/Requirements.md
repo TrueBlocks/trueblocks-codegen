@@ -1,36 +1,4 @@
-# TrueBlocks View Types Requirements
-
-Date: April 06, 2025
-
-## 1. Informational View
-
-Purpose: Provide a static, read-only display for informational content such as About, License, or Privacy Policy pages, serving as a simple, user-friendly way to present essential details without interactivity beyond navigation.
-
-### Features
-
-- Content Source: Loads content from static Markdown files (e.g., `about.en.md`) bundled with the app, reloaded each time the view is accessed.
-  - Rationale: Reloading ensures content is always fresh and avoids caching complexity, suitable for infrequently accessed pages.
-- Rendering: Parses Markdown to HTML using a library like `markdown-to-jsx`, styled to match Mantine’s theme (e.g., dark mode, readable font sizes, high contrast).
-  - Rationale: Markdown is lightweight and widely supported, while Mantine integration ensures visual consistency with the app’s UI.
-- Layout: Displays within `AppShell.Main`, with vertical scrolling for long content. The new Breadcrumb component (above) and `StatusBar` (below) remain fixed and visible during scrolling.
-  - Rationale: Fixed navigation and status elements maintain usability, while scrolling accommodates variable content length without breaking the app’s structure.
-- Accessibility: Supports keyboard navigation (e.g., Tab to focus headings/links) and screen readers (e.g., ARIA labels for rendered Markdown elements).
-  - Rationale: Ensures inclusivity and compliance with basic accessibility standards, enhancing usability for all users.
-- Navigation: Utilizes a reusable Breadcrumb component above `AppShell.Main`, showing the navigation path (e.g., "Home > About") with clickable segments (scope—full history vs. simplified—to be determined during implementation).
-  - Rationale: Breadcrumbs provide context and quick navigation, reusable across views for consistency and efficiency.
-- Localization: Loads localized Markdown files based on `UserPreferences.Language` (accessed via `GetPreference("user.language")`), e.g., `about.fr.md` for French.
-  - Rationale: Leverages existing preference mechanisms for seamless multilingual support without additional backend complexity.
-- Interactivity: Minimal—purely for display, with no forms or editable fields.
-  - Rationale: Keeps the view simple and focused, avoiding unnecessary features for static content.
-
-### Implementation Goal
-
-- Create one example view (`InfoView.tsx`) demonstrating bold, italic, and colored text in Markdown to showcase rendering capabilities and styling options.
-  - Rationale: A rich example highlights the platform’s presentation potential, serving as a template for developers.
-
----
-
-## 2. Form View
+## 1. Form View
 
 Purpose: Enable users to input and edit structured data (e.g., settings, registration) with a robust, interactive, and secure interface, showcasing advanced form handling for the TrueBlocks platform.
 
