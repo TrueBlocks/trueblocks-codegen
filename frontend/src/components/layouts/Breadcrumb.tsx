@@ -1,12 +1,10 @@
-import { Breadcrumbs, Text, Anchor } from '@mantine/core';
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Anchor, Breadcrumbs, Text } from '@mantine/core';
+import { useLocation } from 'wouter';
 
 export const Breadcrumb = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [location, navigate] = useLocation();
 
-  const pathnames = location.pathname.split('/').filter((x) => x);
+  const pathnames = location.split('/').filter((x) => x);
   const breadcrumbItems = [
     { title: 'Home', path: '/' },
     ...pathnames.map((value, index) => {

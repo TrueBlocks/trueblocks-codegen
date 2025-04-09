@@ -1,9 +1,15 @@
-import { getBarWidth, ToggleButton } from '@components';
+import { ToggleButton, getBarWidth } from '@components';
 import { AppShell, Button, Stack } from '@mantine/core';
 import { FaCog, FaDatabase, FaHome, FaInfoCircle } from 'react-icons/fa';
-import { NavLink } from 'react-router-dom';
+import { useLocation } from 'wouter';
 
-export const MenuBar = ({ collapsed, setCollapsed }: MenuBarProps) => {
+export const MenuBar = ({
+  collapsed,
+  setCollapsed,
+  disabled = false,
+}: MenuBarProps) => {
+  const [, navigate] = useLocation();
+
   return (
     <AppShell.Navbar
       p="md"
@@ -23,51 +29,52 @@ export const MenuBar = ({ collapsed, setCollapsed }: MenuBarProps) => {
             direction="left"
           />
           {menuItems.map(({ icon: Icon, label, to }) => (
-            <NavLink key={to} to={to} style={{ textDecoration: 'none' }}>
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? 'filled' : 'subtle'}
-                  color="blue"
-                  fullWidth
-                  h={36}
-                  w={collapsed ? 36 : '100%'}
-                  leftSection={
-                    <Icon size={16} style={{ marginLeft: collapsed ? 9 : 0 }} />
-                  }
-                  justify={collapsed ? 'center' : 'flex-start'}
-                  px={collapsed ? 0 : 'md'}
-                  style={{
-                    marginLeft: collapsed ? -9 : 0,
-                  }}
-                >
-                  {!collapsed && label}
-                </Button>
-              )}
-            </NavLink>
+            <Button
+              key={to}
+              variant={location.pathname === to ? 'filled' : 'subtle'}
+              color="blue"
+              fullWidth
+              h={36}
+              w={collapsed ? 36 : '100%'}
+              leftSection={
+                <Icon size={16} style={{ marginLeft: collapsed ? 9 : 0 }} />
+              }
+              justify={collapsed ? 'center' : 'flex-start'}
+              px={collapsed ? 0 : 'md'}
+              style={{
+                marginLeft: collapsed ? -9 : 0,
+              }}
+              disabled={disabled}
+              onClick={() => {
+                if (!disabled) navigate(to);
+              }}
+            >
+              {!collapsed && label}
+            </Button>
           ))}
         </Stack>
         <Stack gap="sm" pb="md">
-          <NavLink to="/settings" style={{ textDecoration: 'none' }}>
-            {({ isActive }) => (
-              <Button
-                variant={isActive ? 'filled' : 'subtle'}
-                color="blue"
-                fullWidth
-                h={36}
-                w={collapsed ? 36 : '100%'}
-                leftSection={
-                  <FaCog size={16} style={{ marginLeft: collapsed ? 9 : 0 }} />
-                }
-                justify={collapsed ? 'center' : 'flex-start'}
-                px={collapsed ? 0 : 'md'}
-                style={{
-                  marginLeft: collapsed ? -9 : 0,
-                }}
-              >
-                {!collapsed && 'Settings'}
-              </Button>
-            )}
-          </NavLink>
+          <Button
+            variant={location.pathname === '/settings' ? 'filled' : 'subtle'}
+            color="blue"
+            fullWidth
+            h={36}
+            w={collapsed ? 36 : '100%'}
+            leftSection={
+              <FaCog size={16} style={{ marginLeft: collapsed ? 9 : 0 }} />
+            }
+            justify={collapsed ? 'center' : 'flex-start'}
+            px={collapsed ? 0 : 'md'}
+            style={{
+              marginLeft: collapsed ? -9 : 0,
+            }}
+            disabled={disabled}
+            onClick={() => {
+              if (!disabled) navigate('/settings');
+            }}
+          >
+            {!collapsed && 'Settings'}
+          </Button>
         </Stack>
       </Stack>
     </AppShell.Navbar>
@@ -77,14 +84,11 @@ export const MenuBar = ({ collapsed, setCollapsed }: MenuBarProps) => {
 const menuItems = [
   { icon: FaHome, label: 'Home', to: '/' },
   { icon: FaInfoCircle, label: 'About', to: '/about' },
-  {
-    icon: FaDatabase,
-    label: 'Data',
-    to: '/data',
-  },
+  { icon: FaDatabase, label: 'Data', to: '/data' },
 ];
 
 interface MenuBarProps {
   collapsed: boolean;
   setCollapsed: (newVal: boolean) => void;
+  disabled?: boolean;
 }

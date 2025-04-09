@@ -1,9 +1,10 @@
+import { useEffect, useState } from 'react';
+
 import { ToggleButton } from '@components';
 import { AppShell, Stack, Text } from '@mantine/core';
 import Markdown from 'markdown-to-jsx';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { GetMarkdown } from 'wailsjs/go/app/App';
+import { useLocation } from 'wouter';
 
 export const HelpBar = ({
   collapsed,
@@ -12,11 +13,11 @@ export const HelpBar = ({
   collapsed: boolean;
   setCollapsed: (newVal: boolean) => void;
 }) => {
-  const location = useLocation();
+  const [location] = useLocation();
   const [markdown, setMarkdown] = useState<string>('Loading...');
 
   useEffect(() => {
-    const route = location.pathname.split('/')[1] || 'home';
+    const route = location.split('/')[1] || 'home';
     const headerText = `${route.charAt(0).toUpperCase() + route.slice(1)} View`;
     const fetchMarkdown = async () => {
       try {

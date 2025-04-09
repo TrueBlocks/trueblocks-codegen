@@ -1,6 +1,8 @@
-import { SetLastView } from '../../../wailsjs/go/app/App';
 import { useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useLocation } from 'wouter';
+
+import { SetLastView } from '../../../wailsjs/go/app/App';
 
 export const RouteLogger = ({
   ready,
@@ -9,20 +11,19 @@ export const RouteLogger = ({
   ready: boolean;
   lastView: string;
 }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [location, navigate] = useLocation();
   const hasRedirected = useRef(false);
 
   useEffect(() => {
-    if (ready && location.pathname === '/' && !hasRedirected.current) {
+    if (ready && location === '/' && !hasRedirected.current) {
       hasRedirected.current = true;
       void navigate(lastView, { replace: true });
     }
-  }, [ready, lastView, location.pathname, navigate]);
+  }, [ready, lastView, location, navigate]);
 
   useEffect(() => {
     if (ready) {
-      void SetLastView(location.pathname);
+      void SetLastView(location);
     }
   }, [location, ready]);
 

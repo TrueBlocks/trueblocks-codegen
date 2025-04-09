@@ -1,19 +1,21 @@
-import { StatusBar } from './StatusBar';
+import { useEffect, useRef } from 'react';
+
 import { Breadcrumb } from '@components';
 import { AppShell } from '@mantine/core';
 import { About, Data, Home, Settings } from '@views';
-import { useEffect, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, useLocation } from 'wouter';
+
+import { StatusBar } from './StatusBar';
 
 export const MainView = ({ collapsed: _ }: { collapsed: boolean }) => {
-  const location = useLocation();
+  const [location] = useLocation();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = 0;
     }
-  }, [location.pathname]);
+  }, [location]);
 
   return (
     <AppShell.Main
@@ -40,12 +42,18 @@ export const MainView = ({ collapsed: _ }: { collapsed: boolean }) => {
           backgroundColor: 'black',
         }}
       >
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/data" element={<Data />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
+        <Route path="/">
+          <Home />
+        </Route>
+        <Route path="/about">
+          <About />
+        </Route>
+        <Route path="/data">
+          <Data />
+        </Route>
+        <Route path="/settings">
+          <Settings />
+        </Route>
       </div>
 
       <div

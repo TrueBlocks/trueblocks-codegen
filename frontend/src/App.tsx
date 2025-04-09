@@ -1,28 +1,30 @@
+import { useEffect, useState } from 'react';
+
 import {
-  IsReady,
-  GetAppPreferences,
-  CollapseMenu,
-  CollapseHelp,
-} from '../wailsjs/go/app/App';
-import {
-  getBarWidth,
   Footer,
   Header,
   HelpBar,
+  MainView,
   MenuBar,
   RouteLogger,
-  MainView,
+  getBarWidth,
 } from '@components';
 import { AppShell } from '@mantine/core';
-import { useEffect, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { Router, useLocation } from 'wouter';
+
+import {
+  CollapseHelp,
+  CollapseMenu,
+  GetAppPreferences,
+  IsReady,
+} from '../wailsjs/go/app/App';
 
 export const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <RoutedApp />
-    </BrowserRouter>
+    </Router>
   );
 };
 
@@ -33,7 +35,7 @@ const RoutedApp = () => {
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const navigate = useNavigate();
+  const [, navigate] = useLocation();
 
   const toggleMenu = (open: boolean) => {
     collapseMenu(open);
