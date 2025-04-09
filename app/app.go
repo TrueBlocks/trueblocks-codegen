@@ -121,6 +121,10 @@ func (a *App) GetAppPreferences() *types.AppPreferences {
 	return &a.State.App
 }
 
+func (a *App) GetUserPreferences() *types.UserPreferences {
+	return &a.State.User
+}
+
 func (a *App) CollapseMenu(collapse bool) {
 	a.State.App.MenuCollapsed = collapse
 	_ = types.SaveAppPreferences(&a.State.App)

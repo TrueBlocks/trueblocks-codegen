@@ -7,20 +7,27 @@ import (
 )
 
 type UserPreferences struct {
-	Version  string `json:"version"`
-	Theme    string `json:"theme"`
-	Language string `json:"language"`
+	Version  string   `json:"version"`
+	Theme    string   `json:"theme"`
+	Language string   `json:"language"`
+	Name     string   `json:"name"`
+	Email    string   `json:"email"`
+	RPCs     []string `json:"rpcs"`
+}
+
+func NewUserPreferences() UserPreferences {
+	return UserPreferences{
+		Version:  "1.0",
+		Theme:    "dark",
+		Language: "en",
+	}
 }
 
 func LoadUserPreferences() (UserPreferences, error) {
 	path := getUserPrefsPath()
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		defaults := UserPreferences{
-			Version:  "1.0",
-			Theme:    "dark",
-			Language: "en",
-		}
+		defaults := NewUserPreferences()
 
 		if err := SaveUserPreferences(&defaults); err != nil {
 			return UserPreferences{}, err

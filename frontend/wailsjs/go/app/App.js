@@ -50,6 +50,10 @@ export function GetPreference(arg1) {
   return window['go']['app']['App']['GetPreference'](arg1);
 }
 
+export function GetUserPreferences() {
+  return window['go']['app']['App']['GetUserPreferences']();
+}
+
 export function IsReady() {
   return window['go']['app']['App']['IsReady']();
 }

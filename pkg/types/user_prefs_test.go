@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestLoadUserPreferences(t *testing.T) {
@@ -41,8 +43,8 @@ func TestLoadUserPreferences(t *testing.T) {
 			t.Fatalf("Expected no error, got %v", err)
 		}
 
-		if userPrefs != expected {
-			t.Errorf("Expected %v, got %v", expected, userPrefs)
+		if diff := cmp.Diff(expected, userPrefs); diff != "" {
+			t.Errorf("UserPreferences mismatch (-expected +got):\n%s", diff)
 		}
 	})
 }

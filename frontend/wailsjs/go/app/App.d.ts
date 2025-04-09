@@ -28,6 +28,8 @@ export function GetMarkdown(arg1:string,arg2:string):Promise<string>;
 
 export function GetPreference(arg1:string):Promise<string>;
 
+export function GetUserPreferences():Promise<types.UserPreferences>;
+
 export function IsReady():Promise<boolean>;
 
 export function IsReadyStr():Promise<string>;

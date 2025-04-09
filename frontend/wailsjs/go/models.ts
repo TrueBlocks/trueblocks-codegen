@@ -208,6 +208,29 @@ export namespace types {
 		    return a;
 		}
 	}
+	
+	export class UserPreferences {
+	    version: string;
+	    theme: string;
+	    language: string;
+	    name: string;
+	    email: string;
+	    rpcs: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new UserPreferences(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.version = source["version"];
+	        this.theme = source["theme"];
+	        this.language = source["language"];
+	        this.name = source["name"];
+	        this.email = source["email"];
+	        this.rpcs = source["rpcs"];
+	    }
+	}
 
 }
 

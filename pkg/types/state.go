@@ -9,7 +9,9 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/TrueBlocks/trueblocks-codeGen/pkg/validation"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -53,6 +55,18 @@ func (s *State) Save() error {
 
 	s.Dirty = false
 	return nil
+}
+
+func (s *State) SetLastFile(path string) {
+	newList := append([]string{path}, s.App.RecentlyUsedFiles...)
+	s.App.RecentlyUsedFiles = newList[:min(10, len(newList))]
+}
+
+func (s *State) GetLastFile() string {
+	if len(s.App.RecentlyUsedFiles) == 0 {
+		return ""
+	}
+	return s.App.RecentlyUsedFiles[0]
 }
 
 func (s *State) SetLastView(view string) {
@@ -159,6 +173,21 @@ func getFieldValue(prefStruct any, fieldName string) string {
 	}
 
 	return ""
+}
+
+type KV struct {
+	Key   string
+	Value string
+}
+
+func (s *State) SetPreferences(pairs []KV, persist ...bool) {
+	doPersist := len(persist) > 0 && persist[0]
+
+	for i, pair := range pairs {
+		isLast := i == len(pairs)-1
+		persistNow := doPersist && isLast
+		s.SetPreference(pair.Key, pair.Value, persistNow)
+	}
 }
 
 func (s *State) SetPreference(key, value string, persist ...bool) {
@@ -269,4 +298,27 @@ func (s *State) emitFileStatus(ctx context.Context) {
 		"dirty": s.Dirty,
 	}
 	runtime.EventsEmit(ctx, "file:status", status)
+}
+
+func (s *State) GetWizardState() WizardState {
+	_, err := s.CheckRPCStatus()
+	return WizardState{
+		MissingNameEmail:      s.User.Name == "" || validation.ValidEmail(s.User.Email) != nil,
+		RPCUnavailable:        err != nil,
+		MissingLastOpenedFile: len(s.App.RecentlyUsedFiles) == 0 || s.App.RecentlyUsedFiles[0] == "",
+	}
+}
+
+func (s *State) CheckRPCStatus() (string, error) {
+	var lastErr error = fmt.Errorf("no RPCs configured")
+	for _, rpc := range s.User.RPCs {
+		if err := sdk.PingRpc(rpc); err == nil {
+			// we found one
+			return rpc, nil
+		} else {
+			lastErr = err
+		}
+	}
+
+	return "", lastErr
 }
