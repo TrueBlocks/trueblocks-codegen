@@ -55,17 +55,6 @@ func (s *State) Save() error {
 	return nil
 }
 
-func (s *State) SetLastFile(path string) {
-	if s.App.LastFile != path {
-		s.App.LastFile = path
-		s.Dirty = true
-	}
-}
-
-func (s *State) GetLastFile() string {
-	return s.App.LastFile
-}
-
 func (s *State) SetLastView(view string) {
 	if s.App.LastView != view {
 		s.App.LastView = view

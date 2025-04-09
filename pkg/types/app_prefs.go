@@ -20,7 +20,6 @@ type AppPreferences struct {
 	Name              string   `json:"name"`
 	Bounds            Bounds   `json:"bounds"`
 	RecentlyUsedFiles []string `json:"recently_used_files"`
-	LastFile          string   `json:"lastFile"`
 	LastView          string   `json:"lastView"`
 	MenuCollapsed     bool     `json:"menuCollapsed"`
 	HelpCollapsed     bool     `json:"helpCollapsed"`

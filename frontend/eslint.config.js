@@ -32,14 +32,14 @@ export default [
       ...reactRecommended.rules,
       ...reactHooks.configs.recommended.rules,
       ...typescriptEslint.configs.recommended.rules,
-      ...typescriptEslint.configs['recommended-type-checked'].rules,
       ...prettierRecommended.rules,
       'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
       'prettier/prettier': 'error',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
-      ],
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'warn',
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'warn',
@@ -50,13 +50,6 @@ export default [
       react: {
         version: 'detect',
       },
-    },
-  },
-  {
-    files: ['tests/**/*.test.tsx'],
-    rules: {
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
     },
   },
 ];

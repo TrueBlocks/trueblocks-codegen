@@ -55,7 +55,7 @@ export const HelpBar = ({
             size: 'xs',
           }}
         >
-          {markdown.split('\n')[0].replace('# ', '')}
+          {markdown.split('\n')[0]?.replace('# ', '')}
         </Text>
       ) : (
         <Stack gap="sm" style={{ overflowY: 'auto' }}>

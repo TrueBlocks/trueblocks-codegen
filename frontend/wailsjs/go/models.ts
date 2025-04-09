@@ -171,7 +171,6 @@ export namespace types {
 	    name: string;
 	    bounds: Bounds;
 	    recently_used_files: string[];
-	    lastFile: string;
 	    lastView: string;
 	    menuCollapsed: boolean;
 	    helpCollapsed: boolean;
@@ -186,7 +185,6 @@ export namespace types {
 	        this.name = source["name"];
 	        this.bounds = this.convertValues(source["bounds"], Bounds);
 	        this.recently_used_files = source["recently_used_files"];
-	        this.lastFile = source["lastFile"];
 	        this.lastView = source["lastView"];
 	        this.menuCollapsed = source["menuCollapsed"];
 	        this.helpCollapsed = source["helpCollapsed"];
