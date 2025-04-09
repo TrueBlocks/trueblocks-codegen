@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import { Box, Stack } from '@mantine/core';
 import Markdown from 'markdown-to-jsx';
-import { useEffect, useState } from 'react';
 import { GetMarkdown } from 'wailsjs/go/app/App';
 
 export const InfoView = ({ title }: { title: string }) => {
@@ -17,7 +18,7 @@ export const InfoView = ({ title }: { title: string }) => {
         setMarkdownContent(`Error loading content: ${errMsg}`);
       }
     };
-    void fetchMarkdown();
+    fetchMarkdown();
   }, [title]);
 
   return (

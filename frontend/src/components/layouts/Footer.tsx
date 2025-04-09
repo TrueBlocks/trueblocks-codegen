@@ -1,14 +1,12 @@
-import { GetFilename, GetPreference } from '../../../wailsjs/go/app/App';
-import { Socials } from '../ui/Socials';
+import { useEffect, useState } from 'react';
+
 import { getBarWidth } from '@components';
 import { AppShell, Flex, Text } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { app } from 'wailsjs/go/models';
 import { EventsOn } from 'wailsjs/runtime/runtime';
 
-interface FileStatus {
-  name: string;
-  dirty: boolean;
-}
+import { GetFilename, GetPreference } from '../../../wailsjs/go/app/App';
+import { Socials } from '../ui/Socials';
 
 export const Footer = ({ collapsed }: { collapsed: boolean }) => {
   var [org, setOrg] = useState<string>('TrueBlocks, LLC');
@@ -17,15 +15,13 @@ export const Footer = ({ collapsed }: { collapsed: boolean }) => {
     const fetchOrgName = async () => {
       setOrg(await GetPreference('org.developer_name'));
     };
-    void fetchOrgName();
+    fetchOrgName();
   }, []);
 
   return (
     <AppShell.Footer ml={getBarWidth(collapsed, 1) - 1}>
       <Flex h="100%" px="md" align="center" justify="space-between">
-        <Text size="sm">
-          <FilePanel />
-        </Text>
+        <FilePanel />
         <Text size="sm">{org} © 2025</Text>
         <Socials />
       </Flex>
@@ -34,18 +30,21 @@ export const Footer = ({ collapsed }: { collapsed: boolean }) => {
 };
 
 export const FilePanel = () => {
-  const [status, setStatus] = useState<FileStatus>({ name: '', dirty: false });
+  const [status, setStatus] = useState<app.FileStatus>({
+    name: '',
+    dirty: false,
+  });
 
   useEffect(() => {
     const fetchFilename = async () => {
-      setStatus((await GetFilename()) as FileStatus);
+      setStatus(await GetFilename());
     };
-    void fetchFilename();
+    fetchFilename();
   }, []);
 
   useEffect(() => {
-    const unsubscribe = EventsOn('file:status', (msg: FileStatus) => {
-      const newStatus: FileStatus = {
+    const unsubscribe = EventsOn('file:status', (msg) => {
+      const newStatus = {
         name: msg.name,
         dirty: msg.dirty,
       };
@@ -60,9 +59,9 @@ export const FilePanel = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Text>{status.name}</Text>
       {status.dirty && <Text>(Modified)</Text>}
-    </div>
+    </>
   );
 };

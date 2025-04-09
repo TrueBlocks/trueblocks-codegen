@@ -39,12 +39,12 @@ const RoutedApp = () => {
 
   const toggleMenu = (open: boolean) => {
     collapseMenu(open);
-    void CollapseMenu(open);
+    CollapseMenu(open);
   };
 
   const toggleHelp = (open: boolean) => {
     collapseHelp(open);
-    void CollapseHelp(open);
+    CollapseHelp(open);
   };
 
   useEffect(() => {
@@ -66,27 +66,27 @@ const RoutedApp = () => {
       }
       setError('Backend failed to initialize within timeout');
     };
-    void initializeApp();
+    initializeApp();
   }, []);
 
   useHotkeys('mod+1', (e) => {
     e.preventDefault();
-    void navigate('/');
+    navigate('/');
   });
 
   useHotkeys('mod+2', (e) => {
     e.preventDefault();
-    void navigate('/about');
+    navigate('/about');
   });
 
   useHotkeys('mod+3', (e) => {
     e.preventDefault();
-    void navigate('/data');
+    navigate('/data');
   });
 
   useHotkeys('mod+4', (e) => {
     e.preventDefault();
-    void navigate('/settings');
+    navigate('/settings');
   });
 
   useHotkeys(
@@ -96,7 +96,7 @@ const RoutedApp = () => {
       event.stopPropagation();
       const next = !helpCollapsed;
       collapseHelp(next);
-      void CollapseHelp(next);
+      CollapseHelp(next);
     },
     { enableOnFormTags: true },
   );
@@ -108,7 +108,7 @@ const RoutedApp = () => {
       event.stopPropagation();
       const next = !menuCollapsed;
       collapseMenu(next);
-      void CollapseMenu(next);
+      CollapseMenu(next);
     },
     { enableOnFormTags: true },
   );
@@ -146,7 +146,10 @@ const RoutedApp = () => {
         aside={aside}
       >
         <Header />
-        <MenuBar collapsed={menuCollapsed} setCollapsed={toggleMenu} />
+        <MenuBar
+          collapsed={menuCollapsed}
+          setCollapsed={toggleMenu}
+        />
         <HelpBar collapsed={helpCollapsed} setCollapsed={toggleHelp} />
         <MainView collapsed={menuCollapsed} />
         <Footer collapsed={menuCollapsed} />

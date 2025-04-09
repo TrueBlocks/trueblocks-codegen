@@ -17,13 +17,13 @@ export const RouteLogger = ({
   useEffect(() => {
     if (ready && location === '/' && !hasRedirected.current) {
       hasRedirected.current = true;
-      void navigate(lastView, { replace: true });
+      navigate(lastView, { replace: true });
     }
   }, [ready, lastView, location, navigate]);
 
   useEffect(() => {
     if (ready) {
-      void SetLastView(location);
+      SetLastView(location);
     }
   }, [location, ready]);
 

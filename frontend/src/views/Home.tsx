@@ -1,4 +1,4 @@
-import { Stack, Box, Text } from '@mantine/core';
+import { Box, Stack, Text } from '@mantine/core';
 
 export const Home = () => {
   return (

@@ -1,5 +1,6 @@
-import { Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
+
+import { Text } from '@mantine/core';
 import { EventsOn } from 'wailsjs/runtime/runtime';
 
 export const StatusBar = () => {

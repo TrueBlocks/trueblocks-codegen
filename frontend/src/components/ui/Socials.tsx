@@ -1,6 +1,7 @@
+import { ActionIcon, Flex } from '@mantine/core';
+import { FaEnvelope, FaGithub, FaGlobe, FaTwitter } from 'react-icons/fa';
+
 import { BrowserOpenURL } from '../../../wailsjs/runtime/runtime';
-import { Flex, ActionIcon } from '@mantine/core';
-import { FaGlobe, FaEnvelope, FaGithub, FaTwitter } from 'react-icons/fa';
 
 export const Socials = () => {
   const handleClick = (url: string) => {

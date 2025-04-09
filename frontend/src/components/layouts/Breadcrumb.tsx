@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 
 export const Breadcrumb = () => {
   const [location, navigate] = useLocation();
+  const inWizard = location.startsWith('/wizard');
 
   const pathnames = location.split('/').filter((x) => x);
   const breadcrumbItems = [
@@ -14,21 +15,39 @@ export const Breadcrumb = () => {
   ];
 
   const handleNavigate = (path: string) => {
-    void navigate(path);
+    navigate(path);
   };
 
   return (
     <Breadcrumbs separator=">" px="md" style={{ marginTop: '1rem' }}>
-      {breadcrumbItems.map((item, index) => (
-        <Anchor
-          key={index}
-          component="button"
-          onClick={() => handleNavigate(item.path)}
-          style={{ cursor: 'pointer' }}
-        >
-          <Text size="md">{item.title}</Text>
-        </Anchor>
-      ))}
+      {breadcrumbItems.map((item, index) => {
+        const isHome = index === 0;
+        const disabled = isHome && inWizard;
+        if (disabled) {
+          return (
+            <Text key={0} size="md">
+              Home
+            </Text>
+          );
+        }
+
+        return (
+          <Anchor
+            key={index}
+            component="button"
+            onClick={() => {
+              if (!disabled) handleNavigate(item.path);
+            }}
+            style={{
+              cursor: disabled ? 'default' : 'pointer',
+              opacity: disabled ? 0.4 : 1,
+              pointerEvents: disabled ? 'none' : 'auto',
+            }}
+          >
+            <Text size="md">{item.title}</Text>
+          </Anchor>
+        );
+      })}
     </Breadcrumbs>
   );
 };

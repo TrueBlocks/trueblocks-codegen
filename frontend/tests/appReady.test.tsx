@@ -28,7 +28,7 @@ const AppReadyComponent = ({
       setError('Backend failed to initialize within timeout');
     };
 
-    void checkReady();
+    checkReady();
   }, [isReady]);
 
   if (error) return <div>Error: {error}</div>;

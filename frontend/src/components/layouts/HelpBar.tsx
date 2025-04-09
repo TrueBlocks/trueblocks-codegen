@@ -33,7 +33,7 @@ export const HelpBar = ({
     if (collapsed) {
       setMarkdown(`# ${headerText}\n\nLoading...`);
     } else {
-      void fetchMarkdown();
+      fetchMarkdown();
     }
   }, [location, collapsed]);
 
