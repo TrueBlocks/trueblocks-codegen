@@ -17,8 +17,10 @@ import {
   CollapseHelp,
   CollapseMenu,
   GetAppPreferences,
+  GetWizardState,
   IsReady,
 } from '../wailsjs/go/app/App';
+import { types } from '../wailsjs/go/models';
 
 export const App = () => {
   return (
@@ -34,8 +36,12 @@ const RoutedApp = () => {
   const [lastView, setLastView] = useState('/');
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [wizardState, setWizardState] = useState<types.WizardState | null>(
+    null,
+  );
 
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
+  const inWizard = location.startsWith('/wizard');
 
   const toggleMenu = (open: boolean) => {
     collapseMenu(open);
@@ -69,6 +75,25 @@ const RoutedApp = () => {
     initializeApp();
   }, []);
 
+  useEffect(() => {
+    if (!ready) return;
+    const checkWizardState = async () => {
+      try {
+        const state = await GetWizardState();
+        setWizardState(state);
+        const needsWizard = state.missingNameEmail || state.rpcUnavailable;
+        if (needsWizard && !inWizard) {
+          navigate('/wizard', { replace: true });
+        }
+      } catch (err) {
+        console.error('Failed to check wizard state:', err);
+      }
+    };
+    checkWizardState();
+    const interval = setInterval(checkWizardState, 5000);
+    return () => clearInterval(interval);
+  }, [ready, inWizard, navigate]);
+
   useHotkeys('mod+1', (e) => {
     e.preventDefault();
     navigate('/');
@@ -87,6 +112,13 @@ const RoutedApp = () => {
   useHotkeys('mod+4', (e) => {
     e.preventDefault();
     navigate('/settings');
+  });
+
+  useHotkeys('mod+shift+W', (e) => {
+    e.preventDefault();
+    if (import.meta.env.DEV) {
+      navigate('/wizard');
+    }
   });
 
   useHotkeys(
@@ -149,6 +181,7 @@ const RoutedApp = () => {
         <MenuBar
           collapsed={menuCollapsed}
           setCollapsed={toggleMenu}
+          disabled={inWizard}
         />
         <HelpBar collapsed={helpCollapsed} setCollapsed={toggleHelp} />
         <MainView collapsed={menuCollapsed} />

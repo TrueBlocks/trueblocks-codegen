@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Breadcrumb } from '@components';
 import { AppShell } from '@mantine/core';
 import { About, Data, Home, Settings } from '@views';
+import { Wizard } from '@views';
 import { Route, useLocation } from 'wouter';
 
 import { StatusBar } from './StatusBar';
@@ -53,6 +54,9 @@ export const MainView = ({ collapsed: _ }: { collapsed: boolean }) => {
         </Route>
         <Route path="/settings">
           <Settings />
+        </Route>
+        <Route path="/wizard">
+          <Wizard />
         </Route>
       </div>
 

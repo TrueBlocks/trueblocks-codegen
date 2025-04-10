@@ -117,13 +117,8 @@ func (a *App) updateRecentlyUsedFiles() {
 	}
 }
 
-type FileStatus struct {
-	Name  string `json:"name"`
-	Dirty bool   `json:"dirty"`
-}
-
-func (a *App) GetFilename() FileStatus {
-	return FileStatus{
+func (a *App) GetFilename() types.FileStatus {
+	return types.FileStatus{
 		Name:  "example.txt",
 		Dirty: a.State.Dirty,
 	}

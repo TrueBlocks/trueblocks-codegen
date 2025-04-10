@@ -6,6 +6,10 @@ export function AppQuit(arg1) {
   return window['go']['app']['App']['AppQuit'](arg1);
 }
 
+export function CheckRPCStatus() {
+  return window['go']['app']['App']['CheckRPCStatus']();
+}
+
 export function CollapseHelp(arg1) {
   return window['go']['app']['App']['CollapseHelp'](arg1);
 }
@@ -54,6 +58,10 @@ export function GetUserPreferences() {
   return window['go']['app']['App']['GetUserPreferences']();
 }
 
+export function GetWizardState() {
+  return window['go']['app']['App']['GetWizardState']();
+}
+
 export function IsReady() {
   return window['go']['app']['App']['IsReady']();
 }
@@ -66,10 +74,22 @@ export function Logger(arg1) {
   return window['go']['app']['App']['Logger'](arg1);
 }
 
+export function ResetWizardState() {
+  return window['go']['app']['App']['ResetWizardState']();
+}
+
 export function SaveBounds(arg1, arg2, arg3, arg4) {
   return window['go']['app']['App']['SaveBounds'](arg1, arg2, arg3, arg4);
 }
 
 export function SetLastView(arg1) {
   return window['go']['app']['App']['SetLastView'](arg1);
+}
+
+export function SetRPC(arg1) {
+  return window['go']['app']['App']['SetRPC'](arg1);
+}
+
+export function SetUserInfo(arg1, arg2) {
+  return window['go']['app']['App']['SetUserInfo'](arg1, arg2);
 }

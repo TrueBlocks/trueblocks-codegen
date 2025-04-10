@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { getBarWidth } from '@components';
 import { AppShell, Flex, Text } from '@mantine/core';
-import { app } from 'wailsjs/go/models';
+import { types } from 'wailsjs/go/models';
 import { EventsOn } from 'wailsjs/runtime/runtime';
 
 import { GetFilename, GetPreference } from '../../../wailsjs/go/app/App';
@@ -30,7 +30,7 @@ export const Footer = ({ collapsed }: { collapsed: boolean }) => {
 };
 
 export const FilePanel = () => {
-  const [status, setStatus] = useState<app.FileStatus>({
+  const [status, setStatus] = useState<types.FileStatus>({
     name: '',
     dirty: false,
   });

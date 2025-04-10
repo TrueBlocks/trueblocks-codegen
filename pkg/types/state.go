@@ -9,9 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/TrueBlocks/trueblocks-codeGen/pkg/validation"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
-	sdk "github.com/TrueBlocks/trueblocks-sdk/v5"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -182,7 +180,6 @@ type KV struct {
 
 func (s *State) SetPreferences(pairs []KV, persist ...bool) {
 	doPersist := len(persist) > 0 && persist[0]
-
 	for i, pair := range pairs {
 		isLast := i == len(pairs)-1
 		persistNow := doPersist && isLast
@@ -199,37 +196,27 @@ func (s *State) SetPreference(key, value string, persist ...bool) {
 
 	switch {
 	case strings.HasPrefix(key, "project."):
-		innerKey := strings.TrimPrefix(key, "project.")
-		if s.Project.Preferences[innerKey] != value {
-			s.Project.Preferences[innerKey] = value
+		if s.Project.Preferences[key] != value {
+			s.Project.Preferences[key] = value
 			s.Dirty = true
 		}
 
 	case strings.HasPrefix(key, "org."):
-		innerKey := strings.TrimPrefix(key, "org.")
-		if changed := setStructField(reflect.ValueOf(&s.Org).Elem(), innerKey, value); changed {
-			s.Dirty = true
-			if shouldPersist {
-				_ = SaveOrgPreferences(&s.Org)
-			}
+		setStructField(reflect.ValueOf(&s.Org).Elem(), key, value)
+		if shouldPersist {
+			_ = SaveOrgPreferences(&s.Org)
 		}
 
 	case strings.HasPrefix(key, "user."):
-		innerKey := strings.TrimPrefix(key, "user.")
-		if changed := setStructField(reflect.ValueOf(&s.User).Elem(), innerKey, value); changed {
-			s.Dirty = true
-			if shouldPersist {
-				_ = SaveUserPreferences(&s.User)
-			}
+		_ = setStructField(reflect.ValueOf(&s.User).Elem(), key, value)
+		if shouldPersist {
+			_ = SaveUserPreferences(&s.User)
 		}
 
 	case strings.HasPrefix(key, "app."):
-		innerKey := strings.TrimPrefix(key, "app.")
-		if changed := setStructField(reflect.ValueOf(&s.App).Elem(), innerKey, value); changed {
-			s.Dirty = true
-			if shouldPersist {
-				_ = SaveAppPreferences(&s.App)
-			}
+		setStructField(reflect.ValueOf(&s.App).Elem(), key, value)
+		if shouldPersist {
+			_ = SaveAppPreferences(&s.App)
 		}
 	}
 }
@@ -292,33 +279,15 @@ func (s *State) SavePreferences() error {
 	return nil
 }
 
+type FileStatus struct {
+	Name  string `json:"name"`
+	Dirty bool   `json:"dirty"`
+}
+
 func (s *State) emitFileStatus(ctx context.Context) {
-	status := map[string]any{
-		"name":  filepath.Base(s.Path),
-		"dirty": s.Dirty,
+	fs := FileStatus{
+		Name:  filepath.Base(s.Path),
+		Dirty: s.Dirty,
 	}
-	runtime.EventsEmit(ctx, "file:status", status)
-}
-
-func (s *State) GetWizardState() WizardState {
-	_, err := s.CheckRPCStatus()
-	return WizardState{
-		MissingNameEmail:      s.User.Name == "" || validation.ValidEmail(s.User.Email) != nil,
-		RPCUnavailable:        err != nil,
-		MissingLastOpenedFile: len(s.App.RecentlyUsedFiles) == 0 || s.App.RecentlyUsedFiles[0] == "",
-	}
-}
-
-func (s *State) CheckRPCStatus() (string, error) {
-	var lastErr error = fmt.Errorf("no RPCs configured")
-	for _, rpc := range s.User.RPCs {
-		if err := sdk.PingRpc(rpc); err == nil {
-			// we found one
-			return rpc, nil
-		} else {
-			lastErr = err
-		}
-	}
-
-	return "", lastErr
+	runtime.EventsEmit(ctx, "file:status", fs)
 }

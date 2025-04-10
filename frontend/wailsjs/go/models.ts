@@ -1,22 +1,3 @@
-export namespace app {
-	
-	export class FileStatus {
-	    name: string;
-	    dirty: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new FileStatus(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.dirty = source["dirty"];
-	    }
-	}
-
-}
-
 export namespace keys {
 	
 	export class Accelerator {
@@ -209,6 +190,20 @@ export namespace types {
 		}
 	}
 	
+	export class FileStatus {
+	    name: string;
+	    dirty: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new FileStatus(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.dirty = source["dirty"];
+	    }
+	}
 	export class UserPreferences {
 	    version: string;
 	    theme: string;
@@ -229,6 +224,22 @@ export namespace types {
 	        this.name = source["name"];
 	        this.email = source["email"];
 	        this.rpcs = source["rpcs"];
+	    }
+	}
+	export class WizardState {
+	    missingNameEmail: boolean;
+	    rpcUnavailable: boolean;
+	    missingLastOpenedFile: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new WizardState(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.missingNameEmail = source["missingNameEmail"];
+	        this.rpcUnavailable = source["rpcUnavailable"];
+	        this.missingLastOpenedFile = source["missingLastOpenedFile"];
 	    }
 	}
 
