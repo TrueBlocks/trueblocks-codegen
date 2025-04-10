@@ -20,7 +20,6 @@ import {
   GetWizardState,
   IsReady,
 } from '../wailsjs/go/app/App';
-import { types } from '../wailsjs/go/models';
 
 export const App = () => {
   return (
@@ -36,9 +35,6 @@ const RoutedApp = () => {
   const [lastView, setLastView] = useState('/');
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [wizardState, setWizardState] = useState<types.WizardState | null>(
-    null,
-  );
 
   const [location, navigate] = useLocation();
   const inWizard = location.startsWith('/wizard');
@@ -80,7 +76,6 @@ const RoutedApp = () => {
     const checkWizardState = async () => {
       try {
         const state = await GetWizardState();
-        setWizardState(state);
         const needsWizard = state.missingNameEmail || state.rpcUnavailable;
         if (needsWizard && !inWizard) {
           navigate('/wizard', { replace: true });

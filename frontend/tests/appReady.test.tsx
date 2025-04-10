@@ -1,6 +1,7 @@
-import { render, screen, waitFor } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
-import { describe, it, expect, vi } from 'vitest';
+
+import { render, screen, waitFor } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 // Simulate the logic of the app readiness loop
 const AppReadyComponent = ({

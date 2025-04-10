@@ -61,5 +61,5 @@ func (a *App) CheckRPCStatus() (string, error) {
 func (a *App) ResetWizardState() {
 	a.State.App.RecentlyUsedFiles = []string{}
 	a.State.User.RPCs = []string{}
-	a.State.SavePreferences()
+	_ = a.State.SavePreferences()
 }
