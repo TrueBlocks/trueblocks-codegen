@@ -27,9 +27,7 @@ func (a *App) SetUserInfo(name, email string) error {
 		{Key: "user.name", Value: name},
 		{Key: "user.email", Value: email},
 	}
-	a.State.SetPreferences(prefs, true)
-
-	return nil
+	return a.State.SetPreferences(prefs, true)
 }
 
 func (a *App) SetRPC(rpc string) error {
@@ -62,4 +60,17 @@ func (a *App) ResetWizardState() {
 	a.State.App.RecentlyUsedFiles = []string{}
 	a.State.User.RPCs = []string{}
 	_ = a.State.SavePreferences()
+}
+
+// IsInitialized returns whether the app has been initialized
+func (a *App) IsInitialized() bool {
+	prefs := a.GetAppPreferences()
+	return prefs.IsInitialized
+}
+
+// SetInitialized sets the app initialization status
+func (a *App) SetInitialized(state bool) error {
+	prefs := a.GetAppPreferences()
+	prefs.IsInitialized = state
+	return a.State.SavePreferences()
 }

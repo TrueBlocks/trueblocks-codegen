@@ -155,6 +155,7 @@ export namespace types {
 	    lastView: string;
 	    menuCollapsed: boolean;
 	    helpCollapsed: boolean;
+	    isInitialized: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new AppPreferences(source);
@@ -169,6 +170,7 @@ export namespace types {
 	        this.lastView = source["lastView"];
 	        this.menuCollapsed = source["menuCollapsed"];
 	        this.helpCollapsed = source["helpCollapsed"];
+	        this.isInitialized = source["isInitialized"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

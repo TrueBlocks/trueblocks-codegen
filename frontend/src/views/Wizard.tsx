@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
+import { Form, FormField } from '@components';
 import {
   Button,
   Card,
   Container,
-  Group,
   Loader,
   Stack,
   Stepper,
   Text,
-  TextInput,
   Title,
 } from '@mantine/core';
 import { useLocation } from 'wouter';
@@ -22,7 +21,7 @@ import {
   SetUserInfo,
 } from '../../wailsjs/go/app/App';
 
-export const Wizard = () => {
+export const Wizard: React.FC = () => {
   const [, navigate] = useLocation();
   const [activeStep, setActiveStep] = useState(0);
   const [name, setName] = useState('');
@@ -71,22 +70,11 @@ export const Wizard = () => {
     loadInitialData();
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     var msg = `Wizard step changed to: ${activeStep}`;
-  //     var status = {
-  //       name: msg,
-  //       dirty: true,
-  //     };
-  //     EventsEmit('statusbar:log', status);
-  //   })();
-  // }, [activeStep]);
-
-  const handleBackToUserInfo = async () => {
+  const handleBackToUserInfo = () => {
     setActiveStep(0);
   };
 
-  const handleBackToRpc = async () => {
+  const handleBackToRpc = () => {
     setActiveStep(1);
   };
 
@@ -187,6 +175,62 @@ export const Wizard = () => {
     }
   };
 
+  // Define form fields for each step
+  const userInfoFields: FormField[] = [
+    {
+      name: 'name',
+      value: name,
+      label: 'Name',
+      placeholder: 'Enter your name',
+      required: true,
+      error: nameError,
+      onChange: (e) => setName(e.target.value),
+      onBlur: validateName,
+    },
+    {
+      name: 'email',
+      value: email,
+      label: 'Email',
+      placeholder: 'Enter your email',
+      required: true,
+      error: emailError,
+      onChange: (e) => setEmail(e.target.value),
+      onBlur: validateEmail,
+    },
+  ];
+
+  const rpcFields: FormField[] = [
+    {
+      name: 'rpcUrl',
+      value: rpcUrl,
+      label: 'RPC URL',
+      placeholder: 'https://mainnet.infura.io/v3/YOUR_API_KEY',
+      required: true,
+      error: rpcError,
+      onChange: (e) => setRpcUrl(e.target.value),
+      onBlur: validateRpc,
+      rightSection: (
+        <Button
+          size="xs"
+          variant="subtle"
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: '50%',
+            transform: 'translateY(-50%)',
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            setRpcUrl('http://localhost:23456');
+          }}
+        >
+          x
+        </Button>
+      ),
+      hint: 'Example: https://mainnet.infura.io/v3/YOUR_API_KEY',
+    },
+  ];
+
   if (initialLoading) {
     return (
       <Container size="sm" mt="xl">
@@ -215,121 +259,41 @@ export const Wizard = () => {
             label="User Information"
             description="Setup your profile"
           >
-            <Stack>
-              <Title order={3}>User Information</Title>
-              <Text>Please provide your name and email address.</Text>
-
-              <form onSubmit={handleUserInfoSubmit}>
-                <Stack>
-                  <TextInput
-                    label="Name"
-                    placeholder="Enter your name"
-                    withAsterisk
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    onBlur={validateName}
-                    error={nameError}
-                  />
-                  <TextInput
-                    label="Email"
-                    placeholder="Enter your email"
-                    withAsterisk
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onBlur={validateEmail}
-                    error={emailError}
-                  />
-                  <Group justify="flex-end" mt="md">
-                    <Button type="submit" loading={loading}>
-                      Next
-                    </Button>
-                  </Group>
-                </Stack>
-              </form>
-            </Stack>
+            <Form
+              title="User Information"
+              description="Please provide your name and email address."
+              fields={userInfoFields}
+              onSubmit={handleUserInfoSubmit}
+              loading={loading}
+            />
           </Stepper.Step>
 
           <Stepper.Step
             label="RPC Connection"
             description="Connect to Ethereum"
           >
-            <Stack>
-              <Title order={3}>RPC Connection</Title>
-              <Text>
-                Enter an Ethereum RPC endpoint to connect to the blockchain.
-              </Text>
-
-              <form onSubmit={handleRpcSubmit}>
-                <Stack>
-                  <Group grow style={{ position: 'relative' }}>
-                    <TextInput
-                      label="RPC URL"
-                      placeholder="https://mainnet.infura.io/v3/YOUR_API_KEY"
-                      withAsterisk
-                      value={rpcUrl}
-                      onChange={(e) => setRpcUrl(e.target.value)}
-                      onBlur={validateRpc}
-                      error={rpcError}
-                    />
-                    <Button
-                      size="xs"
-                      variant="subtle"
-                      style={{
-                        position: 'absolute',
-                        right: 0,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                      }}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setRpcUrl('http://localhost:23456');
-                      }}
-                    >
-                      x
-                    </Button>
-                  </Group>
-                  <Text size="sm" c="dimmed">
-                    Example: https://mainnet.infura.io/v3/YOUR_API_KEY
-                  </Text>
-                  <Group justify="flex-end" mt="md">
-                    <Button
-                      variant="outline"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleBackToUserInfo();
-                      }}
-                    >
-                      Back
-                    </Button>
-                    <Button type="submit" loading={loading}>
-                      Next
-                    </Button>
-                  </Group>
-                </Stack>
-              </form>
-            </Stack>
+            <Form
+              title="RPC Connection"
+              description="Enter an Ethereum RPC endpoint to connect to the blockchain."
+              fields={rpcFields}
+              onSubmit={handleRpcSubmit}
+              onBack={handleBackToUserInfo}
+              loading={loading}
+            />
           </Stepper.Step>
 
           <Stepper.Step label="Complete" description="Ready to start">
-            <Stack>
-              <Title order={3}>Setup Complete</Title>
-              <Text>
-                Congratulations! You have successfully configured TrueBlocks.
-                You can now start using the application.
-              </Text>
-              <Group justify="flex-end" mt="xl">
-                <Button
-                  variant="outline"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleBackToRpc();
-                  }}
-                >
-                  Back
-                </Button>
-                <Button onClick={handleComplete}>Get Started</Button>
-              </Group>
-            </Stack>
+            <Form
+              title="Setup Complete"
+              description="Congratulations! You have successfully configured TrueBlocks. You can now start using the application."
+              fields={[]}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleComplete();
+              }}
+              onBack={handleBackToRpc}
+              submitText="Get Started"
+            />
           </Stepper.Step>
         </Stepper>
       </Card>

@@ -33,6 +33,8 @@ export function GetUserPreferences():Promise<types.UserPreferences>;
 
 export function GetWizardState():Promise<types.WizardState>;
 
+export function IsInitialized():Promise<boolean>;
+
 export function IsReady():Promise<boolean>;
 
 export function IsReadyStr():Promise<string>;
@@ -42,6 +44,8 @@ export function Logger(arg1:string):Promise<void>;
 export function ResetWizardState():Promise<void>;
 
 export function SaveBounds(arg1:number,arg2:number,arg3:number,arg4:number):Promise<void>;
+
+export function SetInitialized(arg1:boolean):Promise<void>;
 
 export function SetLastView(arg1:string):Promise<void>;
 

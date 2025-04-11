@@ -178,16 +178,19 @@ type KV struct {
 	Value string
 }
 
-func (s *State) SetPreferences(pairs []KV, persist ...bool) {
+func (s *State) SetPreferences(pairs []KV, persist ...bool) error {
 	doPersist := len(persist) > 0 && persist[0]
 	for i, pair := range pairs {
 		isLast := i == len(pairs)-1
 		persistNow := doPersist && isLast
-		s.SetPreference(pair.Key, pair.Value, persistNow)
+		if err := s.SetPreference(pair.Key, pair.Value, persistNow); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
-func (s *State) SetPreference(key, value string, persist ...bool) {
+func (s *State) SetPreference(key, value string, persist ...bool) error {
 	shouldPersist := len(persist) > 0 && persist[0]
 
 	if s.Project.Preferences == nil {
@@ -202,23 +205,25 @@ func (s *State) SetPreference(key, value string, persist ...bool) {
 		}
 
 	case strings.HasPrefix(key, "org."):
-		setStructField(reflect.ValueOf(&s.Org).Elem(), key, value)
+		_ = setStructField(reflect.ValueOf(&s.Org).Elem(), key, value)
 		if shouldPersist {
-			_ = SaveOrgPreferences(&s.Org)
+			return SaveOrgPreferences(&s.Org)
 		}
 
 	case strings.HasPrefix(key, "user."):
 		_ = setStructField(reflect.ValueOf(&s.User).Elem(), key, value)
 		if shouldPersist {
-			_ = SaveUserPreferences(&s.User)
+			return SaveUserPreferences(&s.User)
 		}
 
 	case strings.HasPrefix(key, "app."):
-		setStructField(reflect.ValueOf(&s.App).Elem(), key, value)
+		_ = setStructField(reflect.ValueOf(&s.App).Elem(), key, value)
 		if shouldPersist {
-			_ = SaveAppPreferences(&s.App)
+			return SaveAppPreferences(&s.App)
 		}
 	}
+
+	return nil
 }
 
 func setStructField(v reflect.Value, key, value string) bool {
@@ -260,10 +265,6 @@ func setStructField(v reflect.Value, key, value string) bool {
 	}
 
 	return false
-}
-
-func (s *State) Preferences() *AppPreferences {
-	return &s.App
 }
 
 func (s *State) SavePreferences() error {

@@ -23,6 +23,7 @@ type AppPreferences struct {
 	LastView          string   `json:"lastView"`
 	MenuCollapsed     bool     `json:"menuCollapsed"`
 	HelpCollapsed     bool     `json:"helpCollapsed"`
+	IsInitialized     bool     `json:"isInitialized"`
 }
 
 func (p *AppPreferences) String() string {

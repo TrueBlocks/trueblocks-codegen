@@ -10,7 +10,6 @@ import {
   getBarWidth,
 } from '@components';
 import { AppShell } from '@mantine/core';
-import { useHotkeys } from 'react-hotkeys-hook';
 import { Router, useLocation } from 'wouter';
 
 import {
@@ -20,6 +19,7 @@ import {
   GetWizardState,
   IsReady,
 } from '../wailsjs/go/app/App';
+import { useAppHotkeys } from './hooks/useHotkeys';
 
 export const App = () => {
   return (
@@ -48,6 +48,13 @@ const RoutedApp = () => {
     collapseHelp(open);
     CollapseHelp(open);
   };
+
+  useAppHotkeys({
+    helpCollapsed,
+    collapseHelp,
+    menuCollapsed,
+    collapseMenu,
+  });
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -85,60 +92,9 @@ const RoutedApp = () => {
       }
     };
     checkWizardState();
-    const interval = setInterval(checkWizardState, 5000);
+    const interval = setInterval(checkWizardState, 500);
     return () => clearInterval(interval);
   }, [ready, inWizard, navigate]);
-
-  useHotkeys('mod+1', (e) => {
-    e.preventDefault();
-    navigate('/');
-  });
-
-  useHotkeys('mod+2', (e) => {
-    e.preventDefault();
-    navigate('/about');
-  });
-
-  useHotkeys('mod+3', (e) => {
-    e.preventDefault();
-    navigate('/data');
-  });
-
-  useHotkeys('mod+4', (e) => {
-    e.preventDefault();
-    navigate('/settings');
-  });
-
-  useHotkeys('mod+shift+W', (e) => {
-    e.preventDefault();
-    if (import.meta.env.DEV) {
-      navigate('/wizard');
-    }
-  });
-
-  useHotkeys(
-    'mod+h',
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const next = !helpCollapsed;
-      collapseHelp(next);
-      CollapseHelp(next);
-    },
-    { enableOnFormTags: true },
-  );
-
-  useHotkeys(
-    'mod+m',
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      const next = !menuCollapsed;
-      collapseMenu(next);
-      CollapseMenu(next);
-    },
-    { enableOnFormTags: true },
-  );
 
   if (error) return <div>Error: {error}</div>;
   if (!ready) return <div>Not ready</div>;

@@ -62,6 +62,10 @@ export function GetWizardState() {
   return window['go']['app']['App']['GetWizardState']();
 }
 
+export function IsInitialized() {
+  return window['go']['app']['App']['IsInitialized']();
+}
+
 export function IsReady() {
   return window['go']['app']['App']['IsReady']();
 }
@@ -80,6 +84,10 @@ export function ResetWizardState() {
 
 export function SaveBounds(arg1, arg2, arg3, arg4) {
   return window['go']['app']['App']['SaveBounds'](arg1, arg2, arg3, arg4);
+}
+
+export function SetInitialized(arg1) {
+  return window['go']['app']['App']['SetInitialized'](arg1);
 }
 
 export function SetLastView(arg1) {
