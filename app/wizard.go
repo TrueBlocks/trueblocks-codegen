@@ -47,7 +47,7 @@ func (a *App) SetRPC(rpc string) error {
 	a.State.User.RPCs = newList[:min(5, len(newList))]
 
 	value := strings.Join(a.State.User.RPCs, ",")
-	a.State.SetPreferences([]types.KV{{Key: "user.rpcs", Value: value}}, true)
+	_ = a.State.SetPreferences([]types.KV{{Key: "user.rpcs", Value: value}}, true)
 
 	return nil
 }

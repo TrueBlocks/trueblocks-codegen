@@ -88,7 +88,7 @@ func TestSetPreference(t *testing.T) {
 	state.App.RecentlyUsedFiles = []string{"test1", "test2"}
 
 	t.Run("SetsProjectPreference", func(t *testing.T) {
-		state.SetPreference("project.layout", "grid", true)
+		_ = state.SetPreference("project.layout", "grid", true)
 
 		if got := state.Project.Preferences["layout"]; got != "grid" {
 			t.Errorf("Expected project preference layout to be 'grid', got '%s'", got)
@@ -99,7 +99,7 @@ func TestSetPreference(t *testing.T) {
 	})
 
 	t.Run("SetsOrgPreferenceAndWrites", func(t *testing.T) {
-		state.SetPreference("org.language", "en", true)
+		_ = state.SetPreference("org.language", "en", true)
 
 		orgPrefs, _ := LoadOrgPreferences()
 		if orgPrefs.Language != "en" {
@@ -108,7 +108,7 @@ func TestSetPreference(t *testing.T) {
 	})
 
 	t.Run("SetsUserPreferenceAndWrites", func(t *testing.T) {
-		state.SetPreference("user.theme", "light", true)
+		_ = state.SetPreference("user.theme", "light", true)
 
 		orgPrefs, _ := LoadUserPreferences()
 		if orgPrefs.Theme != "light" {
@@ -117,7 +117,7 @@ func TestSetPreference(t *testing.T) {
 	})
 
 	t.Run("SetsAppPreferenceAndWrites", func(t *testing.T) {
-		state.SetPreference("app.recently_used_files", "demo1.tbproj,demo2.tbproj", true)
+		_ = state.SetPreference("app.recently_used_files", "demo1.tbproj,demo2.tbproj", true)
 
 		orgPrefs, _ := LoadAppPreferences()
 		got := strings.Join(orgPrefs.RecentlyUsedFiles, ",")
@@ -128,7 +128,7 @@ func TestSetPreference(t *testing.T) {
 
 	t.Run("InvalidDomainIsIgnored", func(t *testing.T) {
 		state = NewState(OrgPreferences{}, UserPreferences{}, AppPreferences{})
-		state.SetPreference("unknown.key", "value", true)
+		_ = state.SetPreference("unknown.key", "value", true)
 
 		if state.Dirty {
 			t.Error("Expected dirty to be false for unknown domain")

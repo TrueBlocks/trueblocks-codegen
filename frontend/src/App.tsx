@@ -92,7 +92,7 @@ const RoutedApp = () => {
       }
     };
     checkWizardState();
-    const interval = setInterval(checkWizardState, 500);
+    const interval = setInterval(checkWizardState, 1500);
     return () => clearInterval(interval);
   }, [ready, inWizard, navigate]);
 
