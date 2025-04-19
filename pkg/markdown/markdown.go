@@ -3,8 +3,8 @@ package markdown
 import (
 	"embed"
 	"errors"
+	"fmt"
 	"io/fs"
-	"path/filepath"
 	"strings"
 )
 
@@ -41,5 +41,5 @@ func LoadMarkdown(assets embed.FS, basePath, lan, route, tab string) (string, er
 		}
 	}
 
-	return "", errors.New("markdown file not found for the given route and tab")
+	return "", fmt.Errorf("markdown file not found for %s-%s-%s", route, tab, lan)
 }

@@ -4,7 +4,7 @@ import { TabView } from '../layout/TabView';
 
 export const Settings = () => {
   const tabs = [
-    { label: 'Organization', content: <SettingsOrg /> },
+    { label: 'Org', content: <SettingsOrg /> },
     { label: 'User', content: <SettingsUser /> },
     { label: 'App', content: <SettingsApp /> },
   ];

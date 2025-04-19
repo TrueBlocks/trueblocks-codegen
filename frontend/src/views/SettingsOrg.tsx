@@ -33,9 +33,9 @@ export const SettingsOrg = () => {
     Logger(`Field changed: ${name}, New value: ${JSON.stringify(value)}`);
   };
 
-  const tabs = [
+  const formTab = [
     {
-      label: 'Organization',
+      label: 'Org',
       fields: [
         {
           name: 'developerName',
@@ -108,7 +108,7 @@ export const SettingsOrg = () => {
   return (
     <FormView
       title="Edit / Manage Your Settings"
-      tabs={tabs}
+      tabs={formTab}
       onSubmit={handleSubmit}
       onChange={handleChange}
     />
