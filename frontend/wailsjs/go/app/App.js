@@ -6,14 +6,6 @@ export function CheckRPCStatus() {
   return window['go']['app']['App']['CheckRPCStatus']();
 }
 
-export function CollapseHelp(arg1) {
-  return window['go']['app']['App']['CollapseHelp'](arg1);
-}
-
-export function CollapseMenu(arg1) {
-  return window['go']['app']['App']['CollapseMenu'](arg1);
-}
-
 export function FileNew(arg1) {
   return window['go']['app']['App']['FileNew'](arg1);
 }
@@ -50,8 +42,8 @@ export function GetLastTab(arg1) {
   return window['go']['app']['App']['GetLastTab'](arg1);
 }
 
-export function GetMarkdown(arg1, arg2) {
-  return window['go']['app']['App']['GetMarkdown'](arg1, arg2);
+export function GetMarkdown(arg1, arg2, arg3) {
+  return window['go']['app']['App']['GetMarkdown'](arg1, arg2, arg3);
 }
 
 export function GetOrgPreferences() {
@@ -94,6 +86,10 @@ export function SetAppPreferences(arg1) {
   return window['go']['app']['App']['SetAppPreferences'](arg1);
 }
 
+export function SetHelpCollapsed(arg1) {
+  return window['go']['app']['App']['SetHelpCollapsed'](arg1);
+}
+
 export function SetInitialized(arg1) {
   return window['go']['app']['App']['SetInitialized'](arg1);
 }
@@ -104,6 +100,10 @@ export function SetLastTab(arg1, arg2) {
 
 export function SetLastView(arg1) {
   return window['go']['app']['App']['SetLastView'](arg1);
+}
+
+export function SetMenuCollapsed(arg1) {
+  return window['go']['app']['App']['SetMenuCollapsed'](arg1);
 }
 
 export function SetOrgPreferences(arg1) {

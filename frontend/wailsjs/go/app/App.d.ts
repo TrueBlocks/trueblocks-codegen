@@ -5,10 +5,6 @@ import {types} from '../models';
 
 export function CheckRPCStatus():Promise<string>;
 
-export function CollapseHelp(arg1:boolean):Promise<void>;
-
-export function CollapseMenu(arg1:boolean):Promise<void>;
-
 export function FileNew(arg1:menu.CallbackData):Promise<void>;
 
 export function FileOpen(arg1:menu.CallbackData):Promise<void>;
@@ -27,7 +23,7 @@ export function GetFilename():Promise<types.FileStatus>;
 
 export function GetLastTab(arg1:string):Promise<string>;
 
-export function GetMarkdown(arg1:string,arg2:string):Promise<string>;
+export function GetMarkdown(arg1:string,arg2:string,arg3:string):Promise<string>;
 
 export function GetOrgPreferences():Promise<types.OrgPreferences>;
 
@@ -49,11 +45,15 @@ export function SaveBounds(arg1:number,arg2:number,arg3:number,arg4:number):Prom
 
 export function SetAppPreferences(arg1:types.AppPreferences):Promise<void>;
 
+export function SetHelpCollapsed(arg1:boolean):Promise<void>;
+
 export function SetInitialized(arg1:boolean):Promise<void>;
 
 export function SetLastTab(arg1:string,arg2:string):Promise<void>;
 
 export function SetLastView(arg1:string):Promise<void>;
+
+export function SetMenuCollapsed(arg1:boolean):Promise<void>;
 
 export function SetOrgPreferences(arg1:types.OrgPreferences):Promise<void>;
 

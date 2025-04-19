@@ -1,4 +1,9 @@
-import { CollapseHelp, CollapseMenu, Logger, SetInitialized } from '@app';
+import {
+  Logger,
+  SetHelpCollapsed,
+  SetInitialized,
+  SetMenuCollapsed,
+} from '@app';
 import { EventsEmit } from '@runtime';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useLocation } from 'wouter';
@@ -29,20 +34,10 @@ interface ToggleHotkey extends BaseHotkey {
 
 type Hotkey = NavigationHotkey | DevHotkey | ToggleHotkey;
 
-interface UseAppHotkeysProps {
-  helpCollapsed: boolean;
-  collapseHelp: (value: boolean) => void;
-  menuCollapsed: boolean;
-  collapseMenu: (value: boolean) => void;
-}
-
-export const useAppHotkeys = ({
-  helpCollapsed,
-  collapseHelp,
-  menuCollapsed,
-  collapseMenu,
-}: UseAppHotkeysProps): void => {
+export const useAppHotkeys = (): void => {
   const { currentLocation } = useAppContext();
+  const { menuCollapsed, setMenuCollapsed } = useAppContext();
+  const { helpCollapsed, setHelpCollapsed } = useAppContext();
   const [, navigate] = useLocation();
 
   const handleHotkey = async (
@@ -134,8 +129,8 @@ export const useAppHotkeys = ({
     label: 'Toggle help panel',
     action: () => {
       const next = !helpCollapsed;
-      collapseHelp(next);
-      CollapseHelp(next);
+      setHelpCollapsed(next);
+      SetHelpCollapsed(next);
     },
   };
   const menuToggleHotkey: ToggleHotkey = {
@@ -144,8 +139,8 @@ export const useAppHotkeys = ({
     label: 'Toggle menu panel',
     action: () => {
       const next = !menuCollapsed;
-      collapseMenu(next);
-      CollapseMenu(next);
+      setMenuCollapsed(next);
+      SetMenuCollapsed(next);
     },
   };
 

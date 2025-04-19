@@ -1,3 +1,4 @@
+import { SetMenuCollapsed } from '@app';
 import { ToggleButton, getBarWidth } from '@components';
 import { AppShell, Button, Stack } from '@mantine/core';
 import { MenuItem, MenuItems } from 'src/Menu';
@@ -5,17 +6,17 @@ import { MenuItem, MenuItems } from 'src/Menu';
 import { useAppContext } from '../context/AppContext';
 
 interface MenuBarProps {
-  collapsed: boolean;
-  setCollapsed: (newVal: boolean) => void;
   disabled?: boolean;
 }
 
-export const MenuBar = ({
-  collapsed,
-  setCollapsed,
-  disabled = false,
-}: MenuBarProps) => {
+export const MenuBar = ({ disabled = false }: MenuBarProps) => {
   const { currentLocation, navigate } = useAppContext();
+  const { menuCollapsed, setMenuCollapsed } = useAppContext();
+
+  const toggleMenu = (open: boolean) => {
+    setMenuCollapsed(open);
+    SetMenuCollapsed(open).then(() => {});
+  };
 
   const topMenuItems = MenuItems.filter((item) => item.position === 'top');
   const botMenuItems = MenuItems.filter((item) => item.position !== 'top');
@@ -26,19 +27,21 @@ export const MenuBar = ({
       variant={currentLocation === to ? 'filled' : 'subtle'}
       fullWidth
       h={36}
-      w={collapsed ? 36 : '100%'}
-      leftSection={<Icon size={16} style={{ marginLeft: collapsed ? 9 : 0 }} />}
-      justify={collapsed ? 'center' : 'flex-start'}
-      px={collapsed ? 0 : 'md'}
+      w={menuCollapsed ? 36 : '100%'}
+      leftSection={
+        <Icon size={16} style={{ marginLeft: menuCollapsed ? 9 : 0 }} />
+      }
+      justify={menuCollapsed ? 'center' : 'flex-start'}
+      px={menuCollapsed ? 0 : 'md'}
       style={{
-        marginLeft: collapsed ? -9 : 0,
+        marginLeft: menuCollapsed ? -9 : 0,
       }}
       disabled={disabled}
       onClick={() => {
         if (!disabled) navigate(to);
       }}
     >
-      {!collapsed && label}
+      {!menuCollapsed && label}
     </Button>
   );
 
@@ -49,15 +52,15 @@ export const MenuBar = ({
         paddingTop: 0,
         paddingBottom: 0,
         height: 'calc(100vh - 30px)',
-        width: getBarWidth(collapsed, 1),
+        width: getBarWidth(menuCollapsed, 1),
         transition: 'width 0.2s ease',
       }}
     >
       <Stack h="100%" justify="space-between" gap="sm">
         <Stack gap="sm">
           <ToggleButton
-            collapsed={collapsed}
-            onToggle={() => setCollapsed(!collapsed)}
+            collapsed={menuCollapsed}
+            onToggle={() => toggleMenu(!menuCollapsed)}
             direction="left"
           />
           {topMenuItems.map(renderMenuItem)}

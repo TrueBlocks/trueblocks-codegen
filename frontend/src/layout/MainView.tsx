@@ -9,7 +9,7 @@ import { Route } from 'wouter';
 import { useAppContext } from '../context/AppContext';
 import { StatusBar } from './StatusBar';
 
-export const MainView = ({ collapsed: _ }: { collapsed: boolean }) => {
+export const MainView = () => {
   const { currentLocation } = useAppContext();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

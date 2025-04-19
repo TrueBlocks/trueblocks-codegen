@@ -10,7 +10,7 @@ export const InfoView = ({ title }: { title: string }) => {
   useEffect(() => {
     const fetchMarkdown = async () => {
       try {
-        const content = await GetMarkdown('views', title);
+        const content = await GetMarkdown('views', title, '');
         setMarkdownContent(content);
       } catch (rawErr) {
         const errMsg =

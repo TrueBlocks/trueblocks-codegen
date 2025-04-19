@@ -170,13 +170,13 @@ func (a *App) GetAppPreferences() *types.AppPreferences {
 	return &a.State.App
 }
 
-func (a *App) CollapseMenu(collapse bool) {
+func (a *App) SetMenuCollapsed(collapse bool) {
 	a.State.App.MenuCollapsed = collapse
 	_ = types.SetAppPreferences(&a.State.App)
 }
 
-func (a *App) CollapseHelp(collapsed bool) {
-	a.State.App.HelpCollapsed = collapsed
+func (a *App) SetHelpCollapsed(collapse bool) {
+	a.State.App.HelpCollapsed = collapse
 	_ = types.SetAppPreferences(&a.State.App)
 }
 

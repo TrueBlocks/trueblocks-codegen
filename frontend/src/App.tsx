@@ -1,6 +1,3 @@
-import { useState } from 'react';
-
-import { CollapseHelp, CollapseMenu } from '@app';
 import { getBarWidth } from '@components';
 import { Footer, Header, HelpBar, MainView, MenuBar } from '@layout';
 import { AppShell } from '@mantine/core';
@@ -21,26 +18,9 @@ export const App = () => {
 
 const RoutedApp = () => {
   const { ready, isWizard } = useAppContext();
-  const [menuCollapsed, collapseMenu] = useState(true);
-  const [helpCollapsed, collapseHelp] = useState(true);
+  const { menuCollapsed, helpCollapsed } = useAppContext();
 
-  const toggleMenu = (open: boolean) => {
-    collapseMenu(open);
-    CollapseMenu(open);
-  };
-
-  const toggleHelp = (open: boolean) => {
-    collapseHelp(open);
-    CollapseHelp(open);
-  };
-
-  useAppHotkeys({
-    helpCollapsed,
-    collapseHelp,
-    menuCollapsed,
-    collapseMenu,
-  });
-
+  useAppHotkeys();
   useAppHealth();
 
   if (!ready) return <div>Not ready</div>;
@@ -74,16 +54,12 @@ const RoutedApp = () => {
         aside={aside}
       >
         <Header />
-        <MenuBar
-          collapsed={menuCollapsed}
-          setCollapsed={toggleMenu}
-          disabled={isWizard}
-        />
+        <MenuBar disabled={isWizard} />
         <ViewContextProvider>
-          <MainView collapsed={menuCollapsed} />
+          <MainView />
         </ViewContextProvider>
-        <HelpBar collapsed={helpCollapsed} setCollapsed={toggleHelp} />
-        <Footer collapsed={menuCollapsed} />
+        <HelpBar />
+        <Footer />
       </AppShell>
     </div>
   );

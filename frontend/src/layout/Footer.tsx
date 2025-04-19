@@ -5,9 +5,11 @@ import { Socials, getBarWidth } from '@components';
 import { AppShell, Flex, Text } from '@mantine/core';
 import { types } from '@models';
 import { EventsOn } from '@runtime';
+import { useAppContext } from 'src/context/AppContext';
 
-export const Footer = ({ collapsed }: { collapsed: boolean }) => {
+export const Footer = () => {
   var [org, setOrg] = useState<types.OrgPreferences>({});
+  const { menuCollapsed } = useAppContext();
 
   useEffect(() => {
     const fetchOrgName = async () => {
@@ -19,7 +21,7 @@ export const Footer = ({ collapsed }: { collapsed: boolean }) => {
   }, []);
 
   return (
-    <AppShell.Footer ml={getBarWidth(collapsed, 1) - 1}>
+    <AppShell.Footer ml={getBarWidth(menuCollapsed, 1) - 1}>
       <Flex h="100%" px="md" align="center" justify="space-between">
         <FilePanel />
         <Text size="sm">{org.developerName} © 2025</Text>

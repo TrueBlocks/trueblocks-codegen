@@ -1,28 +1,34 @@
 import { useEffect, useState } from 'react';
 
-import { GetMarkdown } from '@app';
+import { GetMarkdown, SetHelpCollapsed } from '@app';
 import { ToggleButton } from '@components';
 import { AppShell, Stack, Text } from '@mantine/core';
 import Markdown from 'markdown-to-jsx';
 
 import { useAppContext } from '../context/AppContext';
 
-export const HelpBar = ({
-  collapsed,
-  setCollapsed,
-}: {
-  collapsed: boolean;
-  setCollapsed: (newVal: boolean) => void;
-}) => {
-  const { currentLocation } = useAppContext();
+export const HelpBar = () => {
   const [markdown, setMarkdown] = useState<string>('Loading...');
+  const { currentLocation, lastTab } = useAppContext();
+  const { helpCollapsed, setHelpCollapsed } = useAppContext();
+
+  const toggleHelp = (open: boolean) => {
+    setHelpCollapsed(open);
+    SetHelpCollapsed(open);
+  };
 
   useEffect(() => {
-    const route = currentLocation.split('/')[1] || 'home';
-    const headerText = `${route.charAt(0).toUpperCase() + route.slice(1)} View`;
+    var headerText = currentLocation.startsWith('/')
+      ? currentLocation.slice(1)
+      : currentLocation;
+    headerText = `${headerText.charAt(0).toUpperCase() + headerText.slice(1)} View`;
     const fetchMarkdown = async () => {
       try {
-        const content = await GetMarkdown('help', route);
+        const content = await GetMarkdown(
+          'help',
+          currentLocation,
+          lastTab[currentLocation] as string,
+        );
         setMarkdown(`# ${headerText}\n\n${content}`);
       } catch (rawErr) {
         const errMsg =
@@ -31,21 +37,21 @@ export const HelpBar = ({
       }
     };
 
-    if (collapsed) {
+    if (helpCollapsed) {
       setMarkdown(`# ${headerText}\n\nLoading...`);
     } else {
       fetchMarkdown();
     }
-  }, [currentLocation, collapsed]);
+  }, [lastTab, currentLocation, helpCollapsed]);
 
   return (
     <AppShell.Aside p="md" style={{ transition: 'width 0.2s ease' }}>
       <ToggleButton
-        collapsed={collapsed}
-        onToggle={() => setCollapsed(!collapsed)}
+        collapsed={helpCollapsed}
+        onToggle={() => toggleHelp(!helpCollapsed)}
         direction="right"
       />
-      {collapsed ? (
+      {helpCollapsed ? (
         <Text
           style={{
             transform: 'rotate(90deg)',
