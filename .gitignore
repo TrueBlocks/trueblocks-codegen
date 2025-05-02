@@ -1,7 +1,8 @@
 ai
 .initialized
+code_gen
 .DS_Store
-shit
+shit*
 x
 build/bin
 node_modules
@@ -19,5 +20,11 @@ frontend/dist
 
 go.work
 go.work.sum
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
 
 .env

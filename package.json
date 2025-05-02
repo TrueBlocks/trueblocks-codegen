@@ -2,7 +2,7 @@
   "scripts": {
     "build": "wails build",
     "clean": "make clean",
-    "dev": "wails dev -debounce 100 2>&1 | grep -v 'AssetHandler'",
+    "dev": "wails dev -debounce 1000 | grep -v 'AssetHandler'",
     "install": "cd frontend && yarn install && cd - && rm -fR node_modules",
     "lint": "cd frontend && yarn eslint . && cd .. && golangci-lint run && echo '✅ No issues found.'",
     "start": "yarn dev",

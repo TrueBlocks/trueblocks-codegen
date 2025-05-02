@@ -17,6 +17,23 @@ export namespace app {
 
 }
 
+export namespace base {
+	
+	export class Address {
+	    address: number[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Address(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.address = source["address"];
+	    }
+	}
+
+}
+
 export namespace keys {
 	
 	export class Accelerator {
@@ -158,6 +175,24 @@ export namespace msgs {
 	    VIEW_CHANGE = "app:view-changed",
 	    VERSION = "1.0",
 	    TAB_CYCLE = "hotkey:tab-cycle",
+	    IMAGES_CHANGED = "images:changed",
+	}
+
+}
+
+export namespace output {
+	
+	export class RenderCtx {
+	
+	
+	    static createFrom(source: any = {}) {
+	        return new RenderCtx(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	
+	    }
 	}
 
 }

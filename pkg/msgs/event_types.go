@@ -16,9 +16,11 @@ const (
 	EventViewChange EventType = "app:view-changed"
 
 	EventTabCycle EventType = "hotkey:tab-cycle"
+
+	EventImagesChanged EventType = "images:changed"
 )
 
-var AllEventTypes = []struct {
+var AllMessages = []struct {
 	Value  EventType `json:"value"`
 	TSName string    `json:"tsname"`
 }{
@@ -31,4 +33,5 @@ var AllEventTypes = []struct {
 	{EventViewChange, "VIEW_CHANGE"},
 	{EventVersion, "VERSION"},
 	{EventTabCycle, "TAB_CYCLE"},
+	{EventImagesChanged, "IMAGES_CHANGED"},
 }

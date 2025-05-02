@@ -3,54 +3,85 @@ package app
 import (
 	"context"
 	"embed"
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
+	"sync"
 	"sync/atomic"
 	"time"
 
+	"github.com/TrueBlocks/trueblocks-codegen/pkg/fileserver"
 	"github.com/TrueBlocks/trueblocks-codegen/pkg/msgs"
 	"github.com/TrueBlocks/trueblocks-codegen/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-codegen/pkg/project"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/base"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/config"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/file"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/output"
+	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/types"
 	"github.com/TrueBlocks/trueblocks-core/src/apps/chifra/pkg/utils"
+	"github.com/joho/godotenv"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type App struct {
-	ctx         context.Context
 	Assets      embed.FS
 	Preferences *preferences.Preferences
 	Projects    *project.Manager
-	locked      int32
 	ChainList   *utils.ChainList
+	Names       map[base.Address]types.Name
+	fileServer  *fileserver.FileServer
+	locked      int32
+	ctx         context.Context
+	apiKeys     map[string]string
+	ensMap      map[string]base.Address
+	renderCtxs  map[base.Address][]*output.RenderCtx
 }
 
 func NewApp(assets embed.FS) (*App, *menu.Menu) {
-	preferences := &preferences.Preferences{
-		Org:  preferences.OrgPreferences{},
-		User: preferences.UserPreferences{},
-		App:  preferences.AppPreferences{},
-	}
-
-	projectManager := project.NewManager()
-
 	app := &App{
-		Assets:      assets,
-		Preferences: preferences,
-		Projects:    projectManager,
+		Names:    make(map[base.Address]types.Name),
+		Projects: project.NewManager(),
+		Preferences: &preferences.Preferences{
+			Org:  preferences.OrgPreferences{},
+			User: preferences.UserPreferences{},
+			App:  preferences.AppPreferences{},
+		},
+		Assets:     assets,
+		apiKeys:    make(map[string]string),
+		renderCtxs: make(map[base.Address][]*output.RenderCtx),
+		ensMap:     make(map[string]base.Address),
 	}
+
 	app.ChainList, _ = utils.UpdateChainList(config.PathToRootConfig())
+
+	if file.FileExists(".env") {
+		if err := godotenv.Load(); err != nil {
+			log.Fatal("Error loading .env file")
+		} else if app.apiKeys["openAi"] = os.Getenv("OPENAI_API_KEY"); app.apiKeys["openAi"] == "" {
+			log.Fatal("No OPENAI_API_KEY key found")
+		}
+	}
+
 	appMenu := app.buildAppMenu()
 	return app, appMenu
+}
+
+func (a App) String() string {
+	bytes, _ := json.MarshalIndent(a, "", "  ")
+	return string(bytes)
+}
+
+func (a *App) GetContext() context.Context {
+	return a.ctx
 }
 
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 
-	// Initialize the msgs context
 	msgs.InitializeContext(ctx)
 
 	org, err := preferences.GetOrgPreferences()
@@ -74,6 +105,12 @@ func (a *App) Startup(ctx context.Context) {
 	a.Preferences.Org = org
 	a.Preferences.User = user
 	a.Preferences.App = appPrefs
+
+	a.fileServer = fileserver.NewFileServer()
+	if err := a.fileServer.Start(); err != nil {
+		msgs.EmitError("Failed to start file server", err)
+	}
+	go a.watchImagesDir()
 
 	if len(a.Preferences.App.RecentProjects) > 0 {
 		mostRecentPath := a.Preferences.App.RecentProjects[0]
@@ -100,7 +137,14 @@ func (a *App) BeforeClose(ctx context.Context) bool {
 	x, y := runtime.WindowGetPosition(ctx)
 	w, h := runtime.WindowGetSize(ctx)
 	a.SaveBounds(x, y, w, h)
-	return false // false = allow window to close
+
+	if a.fileServer != nil {
+		if err := a.fileServer.Stop(); err != nil {
+			log.Printf("Error shutting down file server: %v", err)
+		}
+	}
+
+	return false // allow window to close
 }
 
 func (a *App) watchWindowBounds() {
@@ -239,62 +283,6 @@ func (a *App) GetOpenProjects() []map[string]interface{} {
 	return result
 }
 
-func (a *App) SwitchToProject(id string) error {
-	if a.Projects.GetProjectByID(id) == nil {
-		return fmt.Errorf("no project with ID %s exists", id)
-	}
-	return a.Projects.SetActive(id)
-}
-
-func (a *App) CloseProject(id string) error {
-	project := a.Projects.GetProjectByID(id)
-	if project == nil {
-		return fmt.Errorf("no project with ID %s exists", id)
-	}
-
-	// Check if project has unsaved changes
-	if project.IsDirty() {
-		response, err := runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Title:   "Unsaved Changes",
-			Message: fmt.Sprintf("Do you want to save changes to project '%s' before closing?", project.GetName()),
-			Buttons: []string{"Yes", "No", "Cancel"},
-		})
-
-		if err != nil {
-			return err
-		}
-
-		switch response {
-		case "Yes":
-			// Save the project before closing
-			if project.GetPath() == "" {
-				// Project hasn't been saved before, need to use SaveAs
-				path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
-					Title: "Save Project Before Closing",
-				})
-				if err != nil || path == "" {
-					return fmt.Errorf("save canceled")
-				}
-
-				// Use project's SaveAs method instead of SaveProjectAs
-				if err := project.SaveAs(path); err != nil {
-					return err
-				}
-			} else {
-				// Project has a path, use normal save
-				// Use project's Save method instead of SaveProject
-				if err := project.Save(); err != nil {
-					return err
-				}
-			}
-		case "Cancel":
-			return fmt.Errorf("close canceled")
-		}
-	}
-
-	return a.Projects.Close(id)
-}
-
 func (a *App) Logger(msg string) {
 	fmt.Println(msg)
 }
@@ -319,4 +307,30 @@ func (a *App) SetOrgPreferences(orgPrefs *preferences.OrgPreferences) error {
 
 func (app *App) GetChainList() *utils.ChainList {
 	return app.ChainList
+}
+
+var r sync.Mutex
+
+func (a *App) RegisterCtx(addr base.Address) *output.RenderCtx {
+	r.Lock()
+	defer r.Unlock()
+
+	rCtx := output.NewStreamingContext()
+	a.renderCtxs[addr] = append(a.renderCtxs[addr], rCtx)
+	return rCtx
+}
+
+func (a *App) Cancel(addr base.Address) (int, bool) {
+	if len(a.renderCtxs) == 0 {
+		return 0, false
+	}
+	if a.renderCtxs[addr] == nil {
+		return 0, true
+	}
+	n := len(a.renderCtxs[addr])
+	for i := 0; i < len(a.renderCtxs[addr]); i++ {
+		a.renderCtxs[addr][i].Cancel()
+	}
+	a.renderCtxs[addr] = nil
+	return n, true
 }

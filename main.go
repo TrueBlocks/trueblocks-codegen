@@ -9,7 +9,7 @@ import (
 	"github.com/TrueBlocks/trueblocks-codegen/pkg/preferences"
 	"github.com/TrueBlocks/trueblocks-codegen/pkg/project"
 	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/logger"
+	wLogger "github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
@@ -21,7 +21,7 @@ func main() {
 	preferences.LoadIdentifiers(assets)
 	a, menu := app.NewApp(assets)
 
-	err := wails.Run(&options.App{
+	opts := options.App{
 		Title:         preferences.GetAppId().AppName,
 		Width:         1024,
 		Height:        768,
@@ -30,7 +30,7 @@ func main() {
 		OnStartup:     a.Startup,
 		OnDomReady:    a.DomReady,
 		OnBeforeClose: a.BeforeClose,
-		LogLevel:      logger.INFO,
+		LogLevel:      wLogger.INFO,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
@@ -40,11 +40,11 @@ func main() {
 			&project.Project{},
 		},
 		EnumBind: []interface{}{
-			msgs.AllEventTypes,
+			msgs.AllMessages,
 		},
-	})
+	}
 
-	if err != nil {
-		fmt.Println("Error:", err)
+	if err := wails.Run(&opts); err != nil {
+		fmt.Println("Error:", err.Error())
 	}
 }
